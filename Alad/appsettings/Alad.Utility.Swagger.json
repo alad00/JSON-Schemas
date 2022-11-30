@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "Swagger": {
+      "description": "Configurazione Alad.Utility.Swagger.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.Swagger",
+      "type": "object",
+      "properties": {
+        "Enabled": {
+          "description": "Abilita Swagger.",
+          "type": "boolean",
+          "default": false
+        },
+        "EnableUI": {
+          "description": "Abilita Swagger UI (solo se anche 'Enabled' è 'true').",
+          "type": "boolean",
+          "default": true
+        },
+        "UIRoutePrefix": {
+          "description": "Indica a quale indirizzo Swagger UI sarà accessibile.",
+          "type": "string",
+          "default": "swagger"
+        },
+        "OpenIdConnectUrl": {
+          "description": "Indica l'indirizzo del server OIDC di autenticazione.",
+          "type": ["string", "null"],
+          "format": "uri-reference"
+        }
+      }
+    }
+  }
+}

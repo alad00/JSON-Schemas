@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "Authentication": {
+      "description": "Configurazione Alad.Auth (autenticazione).\nUtilizzata per fare chiamate tramite OIDC ad altri microservizi.\nhttps://github.com/alad00/Alad.Auth",
+      "type": "object",
+      "properties": {
+        "IdentityEndpoint": {
+          "description": "Indirizzo del server OIDC.",
+          "type": "string",
+          "format": "uri"
+        },
+        "ClientId": {
+          "description": "'client_id' OIDC utilizzato per validare le richieste in arrivo.",
+          "type": "string"
+        },
+        "ClientSecret": {
+          "description": "'client_secret' OIDC utilizzato per validare le richieste in arrivo.",
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "Authorization": {
+      "description": "Configurazione Alad.Auth (autorizzazione).\nhttps://github.com/alad00/Alad.Auth\nhttps://developer.mozilla.org/docs/Glossary/CORS",
+      "type": "object",
+      "properties": {
+        "Origins": {
+          "description": "Origins autorizzate per fare richieste cross-origin.",
+          "type": "array",
+          "items": {
+            "description": "URL origin.",
+            "type": "string",
+            "format": "uri",
+            "pattern": "(?:| Non può terminare con '/'. )(?<!/)$"
+          }
+        }
+      }
+    }
+  }
+}

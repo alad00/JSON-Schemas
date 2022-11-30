@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "Database": {
+      "description": "Configurazione Alad.Database.\nhttps://github.com/alad00/Alad.Utility/blob/master/src/Alad.Database/",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "DbContext": {
+            "description": "Nome della classe di contesto Entity Framework.\nPuò essere il nome completo di namespace, oppure solo il nome della classe.",
+            "type": "string"
+          },
+          "DatabaseType": {
+            "description": "Tipo di database da utilizzare.",
+            "type": "string",
+            "enum": ["SqlServer", "Oracle"]
+          },
+          "ConnectionString": {
+            "description": "Stringa di connessione al database.\nhttps://learn.microsoft.com/dotnet/api/system.data.sqlclient.sqlconnection.connectionstring\nhttps://docs.oracle.com/en/database/oracle/oracle-database/19/odpnt/ConnectionConnectionString.html",
+            "type": "string"
+          },
+          "PoolSize": {
+            "description": "Numero massimo di istanze di 'DbContext' nella pool, oppure 'null' per non configurare il pooling.\nQuesta opzione non serve per configurare il connection pooling.",
+            "type": ["integer", "null"],
+            "default": null
+          }
+        }
+      }
+    }
+  }
+}

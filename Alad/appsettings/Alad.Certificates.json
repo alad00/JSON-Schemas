@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "Certificates": {
+      "description": "Configurazione Alad.Certificates.\nUtilizzati per validare l'identità dei microservizi chiamati.\nhttps://github.com/alad00/Alad.Utility/blob/master/src/Alad.Certificates/",
+      "type": "object",
+      "properties": {
+        "AllowUnknownCertificateAuthority": {
+          "description": "Accetta certificati non firmati da una \"trusted root certification authority\".\nImpostare a 'true' per abilitare l'utilizzo di certificati custom self-signed.",
+          "type": "boolean"
+        },
+        "WatchForChanges": {
+          "description": "Monitora il file di configurazione ed i certificati ai percorsi indicati, aggiornando in tempo reale la lista di certificati considerati validi, senza bisogno di un riavvio.",
+          "type": "boolean"
+        },
+        "RegisterGlobally": {
+          "description": "Abilita globalmente l'utilizzo dei certificati custom.\nQuesta opzione modifica la property statica 'ServicePointManager.ServerCertificateValidationCallback', e viene letta solo una volta all'avvio dell'applicazione, anche se 'WatchForChanges' è 'true'.",
+          "type": "boolean"
+        },
+        "Custom": {
+          "description": "Lista di certificati.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "oneOf": [{
+              "required": ["Path"],
+              "properties": {
+                "Path": {
+                  "description": "Percorso di un certificato PEM.",
+                  "type": "string"
+                }
+              }
+            }, {
+              "required": ["Pem"],
+              "properties": {
+                "Pem": {
+                  "description": "Certificato PEM hardcoded.",
+                  "type": "string"
+                }
+              }
+            }]
+          }
+        }
+      }
+    }
+  }
+}
