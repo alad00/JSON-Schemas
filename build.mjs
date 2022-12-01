@@ -68,7 +68,7 @@ function loadSchemas(dir) {
       schemas[filePath] = schema;
     }
     catch (e) {
-      console.warn(`warning: ${e}`);
+      console.warn(`warning: unable to parse '${filePath}' as JSON. ${e}`);
     }
 
     console.info(`info: ok`);
@@ -193,7 +193,7 @@ function build() {
   for (const filePath in schemas)
     schemas[filePath] = convertLocalRefs(schemas, filePath, schemas[filePath]);
 
-  console.info(`info: building`);
+  console.info(`info: building...`);
 
   fs.rmSync('_site', { recursive: true, force: true });
   fs.mkdirSync('_site', { recursive: true });
@@ -205,6 +205,8 @@ function build() {
     fs.mkdirSync(path.join(outFilePath, '..'), { recursive: true });
     fs.writeFileSync(outFilePath, json);
   }
+
+  console.info(`info: done`);
 }
 
 build();

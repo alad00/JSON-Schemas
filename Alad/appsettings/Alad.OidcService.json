@@ -47,8 +47,11 @@
         },
         "RedirectUris": {
           "description": "Indirizzi di ritorno previsti dal protocollo OIDC.\nPer identificare questi indirizzi, fare riferimento alla documentazione del client (Swagger/Postman), oppure della libreria di autenticazione utilizzata nel servizio o frontend.",
-          "type": "string",
-          "format": "uri"
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
         }
       }
     },
