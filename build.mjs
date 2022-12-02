@@ -81,7 +81,7 @@ function loadSchemas(dir) {
  * Parserizza una `$ref`.
  * @param {string} filePath Percorso del file contenente lo schema.
  * @param {string} ref `$ref`
- * @returns {{ type: 'hash', path: string[] } | { type: 'local', filePath: string } | { type: 'remote', url: string } | { type: 'unknown' }}
+ * @returns {{ type: 'hash', path: string[] } | { type: 'local', filePath: string, path: string[] } | { type: 'remote', url: string } | { type: 'unknown' }}
  */
 function parseRef(filePath, ref) {
   try {
@@ -90,12 +90,16 @@ function parseRef(filePath, ref) {
     if (parsed.host != null)
       return { type: 'remote', url: ref };
 
+    // "./my-schemas/some-schema.json"
+    // "./my-schemas/some-schema.json#/definitions/my-definition"
+    if (parsed.pathname != null)
+      return { type: 'local', filePath: path.join(filePath, '..', parsed.pathname), path: (parsed.hash ?? '').substring(1).split('/').filter(x => x !== '') };
+
     // "#/definitions/my-definition"
     if (parsed.hash === parsed.href)
       return { type: 'hash', path: parsed.hash.substring(1).split('/').filter(x => x !== '') };
 
-    // "./my-schemas/some-schema.json"
-    return { type: 'local', filePath: path.join(filePath, '..', ref) };
+    throw 'not a valid $ref URL.';
   }
   catch (e) {
     console.warn(`warning: error parsing $ref '${ref}': ${e}`);
@@ -138,6 +142,9 @@ function convertLocalRefs(schemas, filePath, schema, baseSchema = undefined, bas
   /** @type {JSONSchema | JSONSchema[]} */
   const converted = Array.isArray(schema) ? [] : {};
 
+  if (!baseSchema)
+    console.debug(`debug: processing '${filePath}'...`);
+
   baseSchema ??= /** @type {JSONSchema} */(converted); // HACK: cast
   baseSchemaSubPath ??= [];
 
@@ -145,7 +152,12 @@ function convertLocalRefs(schemas, filePath, schema, baseSchema = undefined, bas
     const v = schema[k];
     if (typeof v === 'object' && v != null) {
       if (v.$ref == null) {
-        converted[k] = convertLocalRefs(schemas, filePath, v, baseSchema, baseSchemaSubPath);
+        let newValue = convertLocalRefs(schemas, filePath, v, baseSchema, baseSchemaSubPath);;
+
+        if (k === 'definitions' && converted === baseSchema)
+          newValue = { ...converted.definitions, ...newValue };
+        
+        converted[k] = newValue;
       }
       else {
         const parsed = parseRef(filePath, v.$ref);
@@ -166,9 +178,10 @@ function convertLocalRefs(schemas, filePath, schema, baseSchema = undefined, bas
 
           case 'local':
             const definitionId = `file_${encodeURIComponent(parsed.filePath.replace(/\\/g, '/').replace(/\//g, '_')).replace(/%/g, '')}`;
+            console.debug(`debug: $ref '${v.$ref}' resolved to '${parsed.filePath}'`);
             const d = baseSchema.definitions ??= {};
-            d[definitionId] = convertLocalRefs(schemas, parsed.filePath, schemas[parsed.filePath], undefined, ['definitions', definitionId]);
-            converted[k] = { $ref: `#/definitions/${definitionId}` };
+            d[definitionId] = convertLocalRefs(schemas, parsed.filePath, schemas[parsed.filePath], baseSchema, ['definitions', definitionId]);
+            converted[k] = { $ref: ['#'].concat('definitions', definitionId, parsed.path).join('/') };
             break;
 
           default:
@@ -182,24 +195,29 @@ function convertLocalRefs(schemas, filePath, schema, baseSchema = undefined, bas
     }
   }
 
+  if (converted === baseSchema) {
+    converted.definitions = baseSchema.definitions;
+  }
+
   return /** @type {JSONSchema} */(converted); // HACK: cast
 }
 
 function build() {
   const schemas = loadSchemas('.');
+  const schemas2 = {};
 
   console.info(`info: converting local references into definitions...`);
 
   for (const filePath in schemas)
-    schemas[filePath] = convertLocalRefs(schemas, filePath, schemas[filePath]);
+    schemas2[filePath] = convertLocalRefs(schemas, filePath, schemas[filePath]);
 
   console.info(`info: building...`);
 
   fs.rmSync('_site', { recursive: true, force: true });
   fs.mkdirSync('_site', { recursive: true });
 
-  for (const filePath in schemas) {
-    const json = JSON.stringify(schemas[filePath], null, '  ');
+  for (const filePath in schemas2) {
+    const json = JSON.stringify(schemas2[filePath], null, '  ');
     const outFilePath = path.join('_site', filePath);
 
     fs.mkdirSync(path.join(outFilePath, '..'), { recursive: true });
