@@ -181,8 +181,14 @@
           "type": "object",
           "properties": {
             "Hardcoded": { "$ref": "#/definitions/auth-hardcoded" },
-            "AzureAD": { "$ref": "#/definitions/auth-azuread" },
-            "Oidc": { "$ref": "#/definitions/auth-oidc" }
+            "AzureAD": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/auth-azuread" }
+            },
+            "Oidc": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/auth-oidc" }
+            }
           }
         },
         "ValidIssuers": {
@@ -190,8 +196,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "format": "uri",
-            "pattern": "(?:| Non può terminare con '/'. )(?<!/)$"
+            "format": "uri"
           }
         },
         "Scopes": {
