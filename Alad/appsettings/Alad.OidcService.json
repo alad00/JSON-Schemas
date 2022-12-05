@@ -19,7 +19,7 @@
     "scope": {
       "description": "Scope OIDC.",
       "type": "object",
-      "required": ["Id"],
+      "required": ["Id", "Applications"],
       "properties": {
         "Id": { "$ref": "#/definitions/scope-id" },
         "Resources": {
@@ -28,7 +28,7 @@
           "items": { "$ref": "#/definitions/resource-id" }
         },
         "Applications": {
-          "description": "Applicazioni che fanno parte di questo scope.\nTutti i servizi/utenti con accesso a questo scope sono autorizzati a fare chiamate alle API REST esposte da queste applicazioni.\nNOTA (Fabio): se devo essere onesto non sono sicuro di quanto sia utile questa informazione, credo sia solo informativa e può essere omessa. Il valore che effettivamente regola l'accesso a questa risorsa si trova nel campo 'Authorization.RequireScopes' del servizio REST che espone le API.",
+          "description": "Applicazioni che fanno parte di questo scope.\nSe il token include questo scope l'applicazione avrà accesso al contenuto del token, ovvero potrà leggere le autorizzazioni contenute nel token.\nPer utilizzatori libreria Alad.Auth: vedere 'Authorization.RequireScopes' nel file di configurazione del servizio REST.",
           "type": "array",
           "items": { "$ref": "#/definitions/application-id" }
         }
