@@ -2,11 +2,14 @@
   "$schema": "http://json-schema.org/draft-07/schema",
   "definitions": {
     "scope-id": {
-      "description": "Nome scope, preferibilmente alfanumerico lowercase con trattini come separatori.",
-      "type": "string"
+      "$ref": "../definitions/oidc.json#/definitions/scope-token"
     },
     "application-id": {
       "description": "Identificativo applicazione, preferibilmente alfanumerico lowercase con trattini come separatori.",
+      "type": "string"
+    },
+    "resource-id": {
+      "description": "Identificativo risorsa.",
       "type": "string"
     },
     "role-id": {
@@ -19,8 +22,13 @@
       "required": ["Id", "Applications"],
       "properties": {
         "Id": { "$ref": "#/definitions/scope-id" },
+        "Resources": {
+          "description": "Risorse che fanno parte di questo scope.",
+          "type": "array",
+          "items": { "$ref": "#/definitions/resource-id" }
+        },
         "Applications": {
-          "description": "Applicazioni che fanno parte di questo scope.\nTutti i servizi/utenti con accesso a questo scope sono autorizzati a fare chiamate alle API REST esposte da queste applicazioni.",
+          "description": "Applicazioni che fanno parte di questo scope.\nTutti i servizi/utenti con accesso a questo scope sono autorizzati a fare chiamate alle API REST esposte da queste applicazioni.\nNOTA (Fabio): se devo essere onesto non sono sicuro di quanto sia utile questa informazione, credo sia solo informativa e può essere omessa. Il valore che effettivamente regola l'accesso a questa risorsa si trova nel campo 'Authorization.RequireScopes' del servizio REST che espone le API.",
           "type": "array",
           "items": { "$ref": "#/definitions/application-id" }
         }

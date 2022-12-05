@@ -26,7 +26,7 @@
       "type": "object",
       "properties": {
         "Origins": {
-          "description": "Origins autorizzate per fare richieste cross-origin.",
+          "description": "Origins autorizzate per fare richieste cross-origin a questo servizio REST.",
           "type": "array",
           "items": {
             "description": "URL origin.",
@@ -34,6 +34,11 @@
             "format": "uri",
             "pattern": "(?:| Non può terminare con '/'. )(?<!/)$"
           }
+        },
+        "RequireScopes": {
+          "description": "Scopes OIDC necessari per fare richieste a questo servizio REST.\nAvailable since: v1.6.0",
+          "type": "array",
+          "items": { "$ref": "../definitions/oidc.json#/definitions/scope-token" }
         }
       }
     }
