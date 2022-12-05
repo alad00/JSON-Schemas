@@ -19,7 +19,7 @@
     "scope": {
       "description": "Scope OIDC.",
       "type": "object",
-      "required": ["Id", "Applications"],
+      "required": ["Id"],
       "properties": {
         "Id": { "$ref": "#/definitions/scope-id" },
         "Resources": {
