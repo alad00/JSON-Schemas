@@ -1,10 +1,16 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "type": "object",
+  "definitions": {
+    "scope-id": {
+      "$ref": "../definitions/oidc.json#/definitions/scope-token"
+    }
+  },
   "properties": {
     "Authentication": {
-      "description": "Configurazione Alad.Auth (autenticazione).\nUtilizzata per fare chiamate tramite OIDC ad altri microservizi.\nhttps://github.com/alad00/Alad.Auth",
+      "description": "Configurazione Alad.Auth (autenticazione).\nUtilizzata per fare chiamate tramite OIDC ad altri microservizi e per validare i token OIDC in arrivo.\nhttps://github.com/alad00/Alad.Auth",
       "type": "object",
+      "required": ["IdentityEndpoint", "ClientId"],
       "properties": {
         "IdentityEndpoint": {
           "description": "Indirizzo del server OIDC.",
@@ -18,6 +24,22 @@
         "ClientSecret": {
           "description": "'client_secret' OIDC utilizzato per validare le richieste in arrivo.",
           "type": ["string", "null"]
+        },
+        "DangerousAcceptAnyServerCertificate": {
+          "description": "Accetta certificati self-signed dal server OIDC.",
+          "type": "boolean",
+          "default": false
+        },
+        "DangerousDisableAuthentication": {
+          "description": "Disabilita l'autenticazione tramite OIDC, accettando tutte le richieste in arrivo. Se l'autenticazione è disabilitata non è possibile fare chiamate a microservizi che prevedono autenticazione OIDC.",
+          "type": "boolean",
+          "default": false
+        },
+        "Scopes": {
+          "description": "Scopes OIDC accessibili da questo microservizio, necessari per fare chiamate ad altri microservizi.",
+          "type": "array",
+          "default": ["openid"],
+          "items": { "$ref": "#/definitions/scope-id" }
         }
       }
     },
