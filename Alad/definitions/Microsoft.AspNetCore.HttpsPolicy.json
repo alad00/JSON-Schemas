@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "definitions": {
+    "HstsOptions": {
+      "description": "Options for the Hsts Middleware.",
+      "type": "object",
+      "properties": {
+        "MaxAge": {
+          "description": "Sets the max-age parameter of the Strict-Transport-Security header.\nMax-age is required; defaults to 30 days.\nhttps://tools.ietf.org/html/rfc6797#section-6.1.1",
+          "type": "string",
+          "default": "30.00:00:00",
+          "allOf": [{ "$ref": "./System.json#/definitions/TimeSpan" }]
+        },
+        "IncludeSubDomains": {
+          "description": "Enables includeSubDomain parameter of the Strict-Transport-Security header.\nhttps://tools.ietf.org/html/rfc6797#section-6.1.2",
+          "type": "boolean",
+          "default": false
+        },
+        "Preload": {
+          "description": "Sets the preload parameter of the Strict-Transport-Security header.\nPreload is not part of the RFC specification, but is supported by web browsers to preload HSTS sites on fresh install. See https://hstspreload.org/.",
+          "type": "boolean",
+          "default": false
+        },
+        "ExcludedHosts": {
+          "description": "A list of host names that will not add the HSTS header.",
+          "type": "array",
+          "default": ["localhost", "127.0.0.1", "[::1]"],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "HttpsRedirectionOptions": {
+      "description": "Options for the HttpsRedirection middleware.",
+      "type": "object",
+      "properties": {
+        "RedirectStatusCode": {
+          "description": "The status code used for the redirect response. The default is 307.",
+          "type": "integer",
+          "default": 307
+        },
+        "HttpsPort": {
+          "description": "The HTTPS port to be added to the redirected URL.\nIf the HttpsPort is not set, we will try to get the HttpsPort from the following:\n1. HTTPS_PORT environment variable\n2. IServerAddressesFeature\nIf that fails then the middleware will log a warning and turn off.",
+          "type": ["integer", "null"],
+          "default": null
+        }
+      }
+    }
+  }
+}

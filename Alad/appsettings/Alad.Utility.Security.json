@@ -1,0 +1,165 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "Security": {
+      "description": "Configurazione Alad.Utility.Security.\nhttps://github.com/alad00/Alad.Utility/tree/main/src/Alad.Utility.Security",
+      "type": "object",
+      "properties": {
+        "HttpStrictTransportSecurity": {
+          "type": ["object", "null"],
+          "default": { "Enabled": true },
+          "properties": {
+            "Enabled": {
+              "description": "Abilita middleware HSTS.",
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "allOf": [
+            {
+              "description": "Configurazione \"HTTP Strict Transport Security (HSTS)\".\nhttps://developer.mozilla.org/docs/Glossary/HSTS"
+            },
+            {
+              "$comment": "La classe C# di configurazione di Alad eredita da questa classe della Microsoft.",
+              "oneOf": [
+                { "$ref": "../definitions/Microsoft.AspNetCore.HttpsPolicy.json/#/definitions/HstsOptions" },
+                { "type": "null" }
+              ]
+            }
+          ]
+        },
+        "HttpsRedirection": {
+          "type": ["object", "null"],
+          "default": { "Enabled": true },
+          "properties": {
+            "Enabled": {
+              "description": "Abilita middleware redirect da HTTP ad HTTPS.",
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "allOf": [
+            {
+              "description": "Configurazione redirect automatico da HTTP ad HTTPS."
+            },
+            {
+              "$comment": "La classe C# di configurazione di Alad eredita da questa classe della Microsoft.",
+              "oneOf": [
+                { "$ref": "../definitions/Microsoft.AspNetCore.HttpsPolicy.json/#/definitions/HttpsRedirectionOptions" },
+                { "type": "null" }
+              ]
+            }
+          ]
+        },
+        "CrossOriginResourceSharing": {
+          "description": "Configurazione \"Cross-Origin Resource Sharing (CORS)\".\nhttps://developer.mozilla.org/docs/Web/HTTP/CORS",
+          "type": ["object", "null"],
+          "default": {
+            "Enabled": true,
+            "DefaultPolicy": "Default",
+            "Policies": {
+              "Default": {
+                "Origins": [ "http://localhost" ],
+                "Methods": [ "GET", "POST" ],
+                "Headers": [ "Authorization", "Accept", "ContentType", "Origin" ]
+              }
+            }
+          },
+          "properties": {
+            "Enabled": {
+              "description": "Abilita middleware CORS.",
+              "type": "boolean",
+              "default": false
+            },
+            "DefaultPolicy": {
+              "description": "Nome policy attiva di default, se non indicato usa la policy di default di ASP.NET Core.",
+              "type": ["string", "null"],
+              "default": "Default"
+            },
+            "Policies": {
+              "description": "Altre policy accessibili per nome.",
+              "type": "object",
+              "additionalProperties": { "$ref": "../definitions/Microsoft.AspNetCore.Cors.Infrastructure.json/#/definitions/CorsPolicy" }
+            }
+          }
+        },
+        "ContentSecurityPolicy": {
+          "description": "Configurazione \"Content Security Policy (CSP)\".\nhttps://developer.mozilla.org/docs/Web/HTTP/CSP",
+          "type": ["object", "null"],
+          "default": { "Enabled": true, "Policies": [{ "Policy": "default-src 'self'", "ReportViolations": true }] },
+          "properties": {
+            "Enabled": {
+              "description": "Abilita middleware CSP.",
+              "type": "boolean",
+              "default": false
+            },
+            "Policies": {
+              "description": "Lista di policy applicate.",
+              "type": "array",
+              "items": {
+                "description": "Configurazione di una singola \"Content Security Policy (CSP)\".\nhttps://developer.mozilla.org/docs/Web/HTTP/CSP",
+                "type": "object",
+                "required": ["Policy"],
+                "properties": {
+                  "Policy": {
+                    "description": "Contenuto della \"Content Security Policy (CSP)\".\nhttps://developer.mozilla.org/docs/Web/HTTP/CSP#writing_a_policy",
+                    "type": "string",
+                    "default": "default-src 'self'"
+                  },
+                  "ReportViolations": {
+                    "description": "Abilita report violazioni di questa policy all'endpoint integrato (le violazioni vengono riportare sui log).",
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "ReportOnly": {
+                    "description": "Indica allo user agent che le richieste che violano questa policy non devono essere bloccate, ma le violazioni devono comunque essere segnalate (se indicato di farlo). Utile per testare policy nuove senza alterare il funzionamento del sito.",
+                    "type": "boolean",
+                    "default": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "DisableMimeTypeSniffing": {
+          "description": "Disabilita il mime-type sniffing, inviando al client l'header HTTP 'X-Content-Type-Options' con valore 'nosniff'.\nhttps://developer.mozilla.org/docs/Web/HTTP/Headers/X-Content-Type-Options",
+          "type": "boolean",
+          "default": true
+        },
+        "AntiForgery": {
+          "description": "Configurazione protezioni Cross-Site Request Forgery (CSRF) e clickjacking.\nQueste protezioni sono attive di default in ASP.NET Core.\nhttps://developer.mozilla.org/docs/Glossary/CSRF\nhttps://developer.mozilla.org/docs/Glossary/Clickjacking",
+          "type": "object",
+          "properties": {
+            "Cookie": {
+              "description": "Impostazioni cookie anti-forgery.",
+              "type": "object",
+              "properties": {
+                "Name": {
+                  "description": "Name of the cookie that is used by the antiforgery system.\nDefault: \"Alad-NoCSRF\"",
+                  "type": ["string", "null"],
+                  "default": null
+                }
+              }
+            },
+            "FormFieldName": {
+              "description": "Name of the antiforgery token field that is used by the antiforgery system.\nDefault: \"alad-nocsrf\"",
+              "type": ["string", "null"],
+              "default": null
+            },
+            "HeaderName": {
+              "description": "Name of the header value that is used by the antiforgery system. If null then antiforgery validation will only consider form data.\nDefault: \"X-Alad-NoCSRF\"",
+              "type": ["string", "null"],
+              "default": null
+            },
+            "SuppressXFrameOptionsHeader": {
+              "description": "Suppress the generation of X-Frame-Options header which is used to prevent ClickJacking. By default, the X-Frame-Options header is generated with the value SAMEORIGIN. If this setting is 'true', the X-Frame-Options header will not be generated for the response.",
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

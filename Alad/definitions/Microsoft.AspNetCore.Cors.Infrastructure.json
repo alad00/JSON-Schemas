@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "definitions": {
+    "CorsPolicy": {
+      "description": "Defines the policy for Cross-Origin requests based on the CORS specifications.",
+      "type": "object",
+      "properties": {
+        "AllowAnyHeader": {
+          "description": "Indicates if all headers are allowed.",
+          "type": "boolean",
+          "default": false
+        },
+        "AllowAnyMethod": {
+          "description": "Indicates if all methods are allowed.",
+          "type": "boolean",
+          "default": false
+        },
+        "AllowAnyOrigin": {
+          "description": "Indicates if all origins are allowed.",
+          "type": "boolean",
+          "default": false
+        },
+        "ExposedHeaders": {
+          "description": "Headers that the resource might use and can be exposed.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Headers": {
+          "description": "Headers supported by the resource.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Methods": {
+          "description": "Methods supported by the resource.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Origins": {
+          "description": "Origins that are allowed to access the resource.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "PreflightMaxAge": {
+          "description": "Time for which the results of a preflight request can be cached.",
+          "type": ["string", "null"],
+          "default": null,
+          "anyOf": [{ "type": "null" }, { "$ref": "./System.json#/definitions/TimeSpan" }]
+        },
+        "SupportsCredentials": {
+          "description": "Indicates if the resource supports user credentials in the request.",
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
