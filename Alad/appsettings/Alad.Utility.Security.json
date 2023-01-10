@@ -23,7 +23,7 @@
             {
               "$comment": "La classe C# di configurazione di Alad eredita da questa classe della Microsoft.",
               "oneOf": [
-                { "$ref": "../definitions/Microsoft.AspNetCore.HttpsPolicy.json/#/definitions/HstsOptions" },
+                { "$ref": "../definitions/Microsoft.AspNetCore.HttpsPolicy.json#/definitions/HstsOptions" },
                 { "type": "null" }
               ]
             }
@@ -46,7 +46,7 @@
             {
               "$comment": "La classe C# di configurazione di Alad eredita da questa classe della Microsoft.",
               "oneOf": [
-                { "$ref": "../definitions/Microsoft.AspNetCore.HttpsPolicy.json/#/definitions/HttpsRedirectionOptions" },
+                { "$ref": "../definitions/Microsoft.AspNetCore.HttpsPolicy.json#/definitions/HttpsRedirectionOptions" },
                 { "type": "null" }
               ]
             }
@@ -80,7 +80,7 @@
             "Policies": {
               "description": "Altre policy accessibili per nome.",
               "type": "object",
-              "additionalProperties": { "$ref": "../definitions/Microsoft.AspNetCore.Cors.Infrastructure.json/#/definitions/CorsPolicy" }
+              "additionalProperties": { "$ref": "../definitions/Microsoft.AspNetCore.Cors.Infrastructure.json#/definitions/CorsPolicy" }
             }
           }
         },
