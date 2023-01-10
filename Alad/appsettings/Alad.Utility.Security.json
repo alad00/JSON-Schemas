@@ -87,18 +87,31 @@
         "ContentSecurityPolicy": {
           "description": "Configurazione \"Content Security Policy (CSP)\".\nhttps://developer.mozilla.org/docs/Web/HTTP/CSP",
           "type": ["object", "null"],
-          "default": { "Enabled": true, "Policies": [{ "Policy": "default-src 'self'", "ReportViolations": true }] },
+          "default": {
+            "Enabled": true,
+            "DefaultPolicies": [ "Default" ],
+            "Policies": {
+              "Default": { "Policy": "default-src 'self'", "ReportViolations": true }
+            }
+          },
           "properties": {
             "Enabled": {
               "description": "Abilita middleware CSP.",
               "type": "boolean",
               "default": false
             },
-            "Policies": {
-              "description": "Lista di policy applicate.",
+            "DefaultPolicies": {
+              "description": "Nome policy attive di default.\nAvailable since: v1.1.0",
               "type": "array",
-              "items": {
-                "description": "Configurazione di una singola \"Content Security Policy (CSP)\".\nhttps://developer.mozilla.org/docs/Web/HTTP/CSP",
+              "item": {
+                "type": "string"
+              }
+            },
+            "Policies": {
+              "description": "Lista di policy utilizzabili.\nNota: prima della v1.1.0 era un array e tutte le policy presenti erano sempre utilizzate, ora è un dizionario con chiave il nome della policy.",
+              "type": "object",
+              "additionalProperties": {
+                "description": "Configurazione di una singola \"Content Security Policy (CSP)\".\nLa chiave dell'oggetto è il nome della policy.\nhttps://developer.mozilla.org/docs/Web/HTTP/CSP",
                 "type": "object",
                 "required": ["Policy"],
                 "properties": {
