@@ -3,7 +3,22 @@
 
 import fs from 'fs';
 import path from 'path';
+import { exit } from 'process';
 import url from 'url';
+
+const SHOW_DEBUG_LOG = false;
+
+const log = {
+  errorsCount: 0,
+  warningsCount: 0,
+  error(...args) { log.errorsCount++; log._colored('31', true, ...args) },
+  warning(...args) { log.warningsCount++; log._colored('33', true, ...args); },
+  info(...args) { log._colored('', false, ...args); },
+  debug(...args) { SHOW_DEBUG_LOG && log._colored('2', false, ...args); },
+  _colored(colors, error, message, ...args) {
+    (error ? console.error : console.log)(`\x1b[${colors}m${message}\x1b[0m`, ...args);
+  }
+};
 
 /**
  * @typedef {JSONSchemaValue[]} JSONSchemaValueArray
@@ -50,28 +65,30 @@ function loadSchemas(dir) {
   /** @type {{ [path: string]: any }} */
   const schemas = {};
 
+  log.info(`info: loading schemas...`);
+
   for (const filePath of readdirRecursiveSync(dir, { exclude: ['.git', '.github', '.vscode', 'node_modules', '_site'] })) {
     if (path.extname(filePath) != '.json')
       continue;
 
-    console.info(`info: loading '${filePath}'...`);
+    log.debug(`debug: loading '${filePath}'...`);
 
     const json = fs.readFileSync(filePath, { encoding: 'utf8' });
 
     try {
       const schema = JSON.parse(json);
       if (!`${schema.$schema}`.startsWith('http://json-schema.org')) {
-        console.info(`info: no $schema, skipping`);
+        log.info(`info: no $schema on '${filePath}', skipping`);
         continue;
       }
 
       schemas[filePath] = schema;
     }
     catch (e) {
-      console.warn(`warning: unable to parse '${filePath}' as JSON. ${e}`);
+      log.warning(`warning: unable to parse '${filePath}' as JSON. ${e}`);
     }
 
-    console.info(`info: ok`);
+    log.debug(`debug: loaded '${filePath}'`);
   }
 
   return schemas;
@@ -102,7 +119,7 @@ function parseRef(filePath, ref) {
     throw 'not a valid $ref URL.';
   }
   catch (e) {
-    console.warn(`warning: error parsing $ref '${ref}': ${e}`);
+    log.warning(`warning: error parsing $ref '${ref}': ${e}`);
     return { type: 'unknown' };
   }
 }
@@ -143,7 +160,7 @@ function convertLocalRefs(schemas, filePath, schema, baseSchema = undefined, bas
   const converted = Array.isArray(schema) ? [] : {};
 
   if (!baseSchema)
-    console.debug(`debug: processing '${filePath}'...`);
+    log.debug(`debug: processing '${filePath}'...`);
 
   baseSchema ??= /** @type {JSONSchema} */(converted); // HACK: cast
   baseSchemaSubPath ??= [];
@@ -166,7 +183,7 @@ function convertLocalRefs(schemas, filePath, schema, baseSchema = undefined, bas
           case 'hash':
           //  const s = extractPath(schemas[filePath], parsed.path);
           //  if (typeof s !== 'object' || s == null) {
-          //    console.warn(`warning: invalid $ref '${v.$ref}'`);
+          //    log.warning(`warning: invalid $ref '${v.$ref}'`);
           //    converted[k] = v;
           //  }
           //  else {
@@ -178,7 +195,7 @@ function convertLocalRefs(schemas, filePath, schema, baseSchema = undefined, bas
 
           case 'local':
             const definitionId = `file_${encodeURIComponent(parsed.filePath.replace(/\\/g, '/').replace(/\//g, '_')).replace(/%/g, '')}`;
-            console.debug(`debug: $ref '${v.$ref}' resolved to '${parsed.filePath}'`);
+            log.debug(`debug: $ref '${v.$ref}' resolved to '${parsed.filePath}'`);
             const d = baseSchema.definitions ??= {};
             d[definitionId] = convertLocalRefs(schemas, parsed.filePath, schemas[parsed.filePath], baseSchema, ['definitions', definitionId]);
             converted[k] = { $ref: ['#'].concat('definitions', definitionId, parsed.path).join('/') };
@@ -206,12 +223,12 @@ function build() {
   const schemas = loadSchemas('.');
   const schemas2 = {};
 
-  console.info(`info: converting local references into definitions...`);
+  log.info(`info: converting local references into definitions...`);
 
   for (const filePath in schemas)
     schemas2[filePath] = convertLocalRefs(schemas, filePath, schemas[filePath]);
 
-  console.info(`info: building...`);
+  log.info(`info: building...`);
 
   fs.rmSync('_site', { recursive: true, force: true });
   fs.mkdirSync('_site', { recursive: true });
@@ -224,7 +241,25 @@ function build() {
     fs.writeFileSync(outFilePath, json);
   }
 
-  console.info(`info: done`);
+  log.info(`info: done`);
 }
 
-build();
+try {
+  build();
+}
+catch (e) {
+  log.error('error:', e);
+}
+
+if (log.errorsCount > 0) {
+  log.error(`\nterminated with ${log.errorsCount} error${log.errorsCount == 1 ? '' : 's'}${log.warningsCount > 0 ? ` and ${log.warningsCount} warning${log.warningsCount == 1 ? '' : 's'}` : ''}`)
+  exit(1);
+}
+else if (log.warningsCount > 0) {
+  log.warning(`\nbuilt with ${log.warningsCount} warning${log.warningsCount == 1 ? '' : 's'}`)
+  exit(0);
+}
+else {
+  log.info(`\nbuilt without errors`);
+  exit(0);
+}
