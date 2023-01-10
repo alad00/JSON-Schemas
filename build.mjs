@@ -50,7 +50,7 @@ function loadSchemas(dir) {
   /** @type {{ [path: string]: any }} */
   const schemas = {};
 
-  for (const filePath of readdirRecursiveSync(dir, { exclude: ['.git', '.github', 'node_modules', '_site'] })) {
+  for (const filePath of readdirRecursiveSync(dir, { exclude: ['.git', '.github', '.vscode', 'node_modules', '_site'] })) {
     if (path.extname(filePath) != '.json')
       continue;
 
