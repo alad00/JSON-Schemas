@@ -62,7 +62,7 @@
               "Default": {
                 "Origins": [ "http://localhost" ],
                 "Methods": [ "GET", "POST" ],
-                "Headers": [ "Authorization", "Accept", "ContentType", "Origin" ]
+                "Headers": [ "Authorization", "Accept", "Content-Type", "Origin" ]
               }
             }
           },
