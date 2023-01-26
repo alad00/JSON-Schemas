@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "HealthChecks": {
+      "description": "Configurazione Alad.Utility.HealthChecks.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.HealthChecks",
+      "type": "object",
+      "default": { "Enabled": true },
+      "properties": {
+        "Enabled": {
+          "description": "Abilita health-checking.\nAvailable since: v0.1.0",
+          "type": "boolean",
+          "default": false
+        },
+        "Route": {
+          "description": "Indirizzo dell'endpoint di health-check.\nAvailable since: v0.1.0",
+          "type": "string",
+          "default": "/healthz"
+        }
+      }
+    }
+  }
+}
