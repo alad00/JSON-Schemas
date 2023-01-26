@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "Servlets": {
+      "description": "Configurazione Alad.Servlets.\nhttps://github.com/alad00/Alad.Servlets",
+      "type": "object",
+      "properties": {
+        "ServletsPath": {
+          "description": "Le DLL in questa cartella vengono analizzate, e se contengono un servlet vengono caricate. Impostare a \"{BaseDirectory}\" per cercare servlet nella cartella dell'entry-point.\nAvailable since: v0.3.0",
+          "type": "string",
+          "default": "{BaseDirectory}"
+        }
+      }
+    }
+  }
+}
