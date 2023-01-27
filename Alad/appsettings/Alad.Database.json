@@ -9,20 +9,21 @@
         "type": "object",
         "properties": {
           "DbContext": {
-            "description": "Nome della classe di contesto Entity Framework.\nPuò essere il nome completo di namespace, oppure solo il nome della classe.",
+            "description": "Nome della classe di contesto Entity Framework.\nPuò essere il nome completo di namespace, oppure solo il nome della classe.\nAvailable since: v1.1.0",
             "type": "string"
           },
           "DatabaseType": {
-            "description": "Tipo di database da utilizzare.",
+            "description": "Tipo di database da utilizzare.\nAvailable since: v1.1.0",
+            "default": "SqlServer",
             "type": "string",
             "enum": ["SqlServer", "Oracle"]
           },
           "ConnectionString": {
-            "description": "Stringa di connessione al database.\nhttps://learn.microsoft.com/dotnet/api/system.data.sqlclient.sqlconnection.connectionstring\nhttps://docs.oracle.com/en/database/oracle/oracle-database/19/odpnt/ConnectionConnectionString.html",
+            "description": "Stringa di connessione al database.\nhttps://learn.microsoft.com/dotnet/api/system.data.sqlclient.sqlconnection.connectionstring\nhttps://docs.oracle.com/en/database/oracle/oracle-database/19/odpnt/ConnectionConnectionString.html\nAvailable since: v1.1.0",
             "type": "string"
           },
           "PoolSize": {
-            "description": "Numero massimo di istanze di 'DbContext' nella pool, oppure 'null' per non configurare il pooling.\nQuesta opzione non serve per configurare il connection pooling.",
+            "description": "Numero massimo di istanze di 'DbContext' nella pool, oppure 'null' per non configurare il pooling.\nQuesta opzione non serve per configurare il connection pooling.\nAvailable since: v1.1.0",
             "type": ["integer", "null"],
             "default": null
           }
