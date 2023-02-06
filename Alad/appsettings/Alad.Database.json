@@ -22,10 +22,26 @@
             "description": "Stringa di connessione al database.\nhttps://learn.microsoft.com/dotnet/api/system.data.sqlclient.sqlconnection.connectionstring\nhttps://docs.oracle.com/en/database/oracle/oracle-database/19/odpnt/ConnectionConnectionString.html\nAvailable since: v1.1.0",
             "type": "string"
           },
+          "DefaultSchema": {
+            "description": "Schema utilizzato per le tabelle per le quali non è indicato.\nAvailable since: v1.6.0",
+            "type": [ "string", "null" ]
+          },
+          "Schemas": {
+            "description": "Schema per ciascuna tabella.\nLa chiave è il nome del tipo in C# (opzionalmente comprensivo di namespace).\nAvailable since: v1.6.0",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
           "PoolSize": {
             "description": "Numero massimo di istanze di 'DbContext' nella pool, oppure 'null' per non configurare il pooling.\nQuesta opzione non serve per configurare il connection pooling.\nAvailable since: v1.1.0",
             "type": ["integer", "null"],
             "default": null
+          },
+          "AllowMigrations": {
+            "description": "Applica migrations se la relativa funzione è chiamata via codice.\nAttenzione: le migrations utilizzano lo schema indicato al momento di creazione, non quello indicato in configurazione.\nAvailable since: v1.6.0",
+            "type": "boolean",
+            "default": false
           }
         }
       }
