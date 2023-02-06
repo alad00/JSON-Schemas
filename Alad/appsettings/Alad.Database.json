@@ -38,8 +38,8 @@
             "type": ["integer", "null"],
             "default": null
           },
-          "AllowMigrations": {
-            "description": "Applica migrations se la relativa funzione è chiamata via codice.\nAttenzione: le migrations utilizzano lo schema indicato al momento di creazione, non quello indicato in configurazione.\nAvailable since: v1.6.0",
+          "ApplyMigrations": {
+            "description": "Applica migrations quando la relativa funzione è chiamata via codice.\nAttenzione: le migrations non supportano schema custom, quindi non è consentito applicare migrations se 'DefaultSchema' o 'Schemas' sono valorizzati.\nAvailable since: v1.6.2",
             "type": "boolean",
             "default": false
           }
