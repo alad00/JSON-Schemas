@@ -12,19 +12,37 @@
           "default": false
         },
         "EnableUI": {
-          "description": "Abilita Swagger UI (solo se anche 'Enabled' è 'true').",
+          "description": "Abilita Swagger UI (solo se anche 'Enabled' è 'true').\nAvailable since: v1.0.0",
           "type": "boolean",
           "default": true
         },
         "UIRoutePrefix": {
-          "description": "Indica a quale indirizzo Swagger UI sarà accessibile.",
+          "description": "Indica a quale indirizzo Swagger UI sarà accessibile.\nAvailable since: v1.0.0",
           "type": "string",
           "default": "swagger"
         },
         "OpenIdConnectUrl": {
-          "description": "Indica l'indirizzo del server OIDC di autenticazione.",
+          "description": "Indica l'indirizzo del server OIDC di autenticazione.\nAvailable since: v1.0.0",
           "type": ["string", "null"],
           "format": "uri-reference"
+        },
+        "DefaultClientId": {
+          "description": "'client_id' di OIDC precompilato.\nAvailable since: v1.1.0",
+          "type": "string",
+          "default": ""
+        },
+        "DefaultClientSecret": {
+          "description": "'client_secret' di OIDC precompilato.\nAvailable since: v1.1.0",
+          "type": "string",
+          "default": ""
+        },
+        "DefaultScopes": {
+          "description": "Scopes di OIDC pre-selezionati.\nAvailable since: v1.1.0",
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
         }
       }
     }
