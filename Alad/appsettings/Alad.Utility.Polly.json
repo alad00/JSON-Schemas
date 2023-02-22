@@ -1,0 +1,187 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "definitions": {
+    "_RetryProp_RetryCount": {
+      "properties": {
+        "RetryCount": {
+          "description": "Numero massimo di ri-tentativi.\nAvailable since: v1.1.0",
+          "type": "integer",
+          "default": 1
+        }
+      }
+    },
+    "_RetryProp_MedianFirstRetryDelay": {
+      "properties": {
+        "MedianFirstRetryDelay": {
+          "description": "The median delay to target before the first retry.\nAvailable since: v1.1.0\nhttps://github.com/Polly-Contrib/Polly.Contrib.WaitAndRetry/blob/63544b79349239295e3f11b7a2ded9bc5a5270d6/src/Polly.Contrib.WaitAndRetry/Backoff.DecorrelatedJitterV2.cs#L13-L17",
+          "type": "string",
+          "default": "00:00:01",
+          "allOf": [{ "$ref": "../definitions/System.json#/definitions/TimeSpan" }]
+        }
+      }
+    },
+    "_RetryProp_Delay": {
+      "properties": {
+        "Delay": {
+          "description": "Tempo di attesa tra un tentativo e l'altro.\nAvailable since: v1.1.0",
+          "type": "string",
+          "default": "00:00:01",
+          "allOf": [{ "$ref": "../definitions/System.json#/definitions/TimeSpan" }]
+        }
+      }
+    },
+    "_RetryProp_InitialDelay": {
+      "properties": {
+        "InitialDelay": {
+          "description": "Tempo di attesa prima di riprovare la prima volta.\nAvailable since: v1.1.0",
+          "type": "string",
+          "default": "00:00:01",
+          "allOf": [{ "$ref": "../definitions/System.json#/definitions/TimeSpan" }]
+        }
+      }
+    },
+    "_RetryProp_MinDelay": {
+      "properties": {
+        "MinDelay": {
+          "description": "Tempo di attesa minimo prima di riprovare.\nAvailable since: v1.1.0",
+          "type": "string",
+          "default": "00:00:00",
+          "anyOf": [{ "$ref": "../definitions/System.json#/definitions/TimeSpan" }]
+        }
+      }
+    },
+    "_RetryProp_MaxDelay": {
+      "properties": {
+        "MaxDelay": {
+          "description": "Tempo di attesa massimo prima di riprovare.\nAvailable since: v1.1.0",
+          "type": [ "string", "null" ],
+          "default": null,
+          "anyOf": [
+            { "$ref": "../definitions/System.json#/definitions/TimeSpan" },
+            { "const": null }
+          ]
+        }
+      }
+    },
+    "_RetryProp_Factor": {
+      "properties": {
+        "FastFirst": {
+          "description": "Fattore moltiplicativo.\nAvailable since: v1.1.0",
+          "type": "number",
+          "default": 2.0
+        }
+      }
+    },
+    "_RetryProp_FastFirst": {
+      "properties": {
+        "FastFirst": {
+          "description": "Riprova immediatamente la prima volta.\nAvailable since: v1.1.0",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "PolicyConfiguration": {
+      "type": "object",
+      "properties": {
+        "RetryPolicy": {
+          "description": "Policy per riprovare in caso di errore.\nAvailable since: v1.1.0",
+          "enum": [
+            null,
+            "ConstantBackoff",
+            "LinearBackoff",
+            "ExponentialBackoff",
+            "AwsDecorrelatedJitterBackoff",
+            "DecorrelatedJitterBackoffV2"
+          ]
+        }
+      },
+      "anyOf": [{
+        "$comment": "Policy: None",
+        "properties": {
+          "RetryPolicy": {
+            "description": "Non riprova in caso di errore.\nAvailable since: v1.1.0",
+            "const": null
+          }
+        }
+      }, {
+        "$comment": "Policy: ConstantBackoff",
+        "required": [ "RetryPolicy", "Delay", "RetryCount" ],
+        "properties": {
+          "RetryPolicy": {
+            "description": "Attende un tempo costante.\nEsempio: 300ms, 300ms, 300ms, 300ms, ...\nAvailable since: v1.1.0",
+            "const": "ConstantBackoff"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/_RetryProp_RetryCount" },
+          { "$ref": "#/definitions/_RetryProp_Delay" },
+          { "$ref": "#/definitions/_RetryProp_FastFirst" }
+        ]
+      }, {
+        "$comment": "Policy: LinearBackoff",
+        "required": [ "RetryPolicy", "InitialDelay", "RetryCount" ],
+        "properties": {
+          "RetryPolicy": {
+            "description": "Aumenta linearmente il tempo di attesa.\nEsempio: 300ms, 600ms, 900ms, 1200ms, ...\nAvailable since: v1.1.0",
+            "const": "LinearBackoff"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/_RetryProp_InitialDelay" },
+          { "$ref": "#/definitions/_RetryProp_RetryCount" },
+          { "$ref": "#/definitions/_RetryProp_Factor" },
+          { "$ref": "#/definitions/_RetryProp_FastFirst" },
+          { "$ref": "#/definitions/_RetryProp_MaxDelay" }
+        ]
+      }, {
+        "$comment": "Policy: ExponentialBackoff",
+        "required": [ "RetryPolicy", "RetryCount", "InitialDelay" ],
+        "properties": {
+          "RetryPolicy": {
+            "description": "Aumenta esponenzialmente il tempo di attesa.\nEsempio: 100ms, 200ms, 400ms, 800ms, ...\nAvailable since: v1.1.0",
+            "const": "ExponentialBackoff"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/_RetryProp_InitialDelay" },
+          { "$ref": "#/definitions/_RetryProp_RetryCount" },
+          { "$ref": "#/definitions/_RetryProp_Factor" },
+          { "$ref": "#/definitions/_RetryProp_FastFirst" },
+          { "$ref": "#/definitions/_RetryProp_MaxDelay" }
+        ]
+      }, {
+        "$comment": "Policy: AwsDecorrelatedJitterBackoff",
+        "required": [ "RetryPolicy", "MinDelay", "MaxDelay", "RetryCount" ],
+        "properties": {
+          "RetryPolicy": {
+            "description": "Generates sleep durations in a jittered manner, making sure to mitigate any correlations.\nFor example: 117ms, 236ms, 141ms, 424ms, ...\nAvailable since: v1.1.0\nhttps://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/",
+            "const": "AwsDecorrelatedJitterBackoff"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/_RetryProp_MinDelay" },
+          { "$ref": "#/definitions/_RetryProp_MaxDelay" },
+          { "$ref": "#/definitions/_RetryProp_RetryCount" },
+          { "$ref": "#/definitions/_RetryProp_FastFirst" }
+        ]
+      }, {
+        "$comment": "Policy: DecorrelatedJitterBackoffV2",
+        "required": [ "RetryPolicy", "MedianFirstRetryDelay", "RetryCount" ],
+        "properties": {
+          "RetryPolicy": {
+            "description": "Wait in an exponentially backing-off, jittered manner, making sure to mitigate any correlations.\nFor example: 850ms, 1455ms, 3060ms.\nAvailable since: v1.1.0\nhttps://github.com/Polly-Contrib/Polly.Contrib.WaitAndRetry/blob/63544b79349239295e3f11b7a2ded9bc5a5270d6/src/Polly.Contrib.WaitAndRetry/Backoff.DecorrelatedJitterV2.cs",
+            "const": "DecorrelatedJitterBackoffV2"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/_RetryProp_MedianFirstRetryDelay" },
+          { "$ref": "#/definitions/_RetryProp_RetryCount" },
+          { "$ref": "#/definitions/_RetryProp_FastFirst" },
+          { "$ref": "#/definitions/_RetryProp_MaxDelay" }
+        ]
+      }]
+    }
+  }
+}
