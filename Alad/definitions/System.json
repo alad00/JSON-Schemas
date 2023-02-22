@@ -3,7 +3,7 @@
   "definitions": {
     "TimeSpan": {
       "$comment": "In realtà il formato standard è più flessibile, ma questa regex rimuove le ambiguità.\nhttps://docs.microsoft.com/dotnet/standard/base-types/standard-timespan-format-strings",
-      "pattern": "^-?([0-9]+[.])?((2[0-3]|[01]?[0-9]):(5[0-9]|[0-4]?[0-9])(:(5[0-9]?|[0-4][0-9])([.][0-9]{0,7})?)?)$"
+      "pattern": "(\nTimestamp in formato .NET.\n\nEsempi:\n\"7.12:34:56.789\" 7gg 12h 34m 56s 789ms\n\"0:01:23\" 1m 23s\n\"1:23\" 1h 23m\n\n){0}^-?([0-9]+[.])?((2[0-3]|[01]?[0-9]):(5[0-9]|[0-4]?[0-9])(:(5[0-9]?|[0-4]?[0-9])([.][0-9]{0,7})?)?)$"
     }
   }
 }

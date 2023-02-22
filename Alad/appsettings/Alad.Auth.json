@@ -54,7 +54,7 @@
             "description": "URL origin.",
             "type": "string",
             "format": "uri",
-            "pattern": "(?:| Non può terminare con '/'. )(?<!/)$"
+            "pattern": "(\nNon può terminare con '/'.\n\n){0}(^|[^/])$"
           }
         },
         "RequireScopes": {

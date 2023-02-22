@@ -4,7 +4,7 @@
     "scope-token": {
       "$comment": "Defined in Section 3.3 of RFC6749",
       "description": "Scope OIDC.",
-      "pattern": "(?:| Solo caratteri ASCII stampabili ad eccezione di spazio, \" e \\. )^[!#-\\[\\]-~]+$"
+      "pattern": "(\nSolo caratteri ASCII stampabili ad eccezione di spazio, \" e \\.\n\n){0}^[!#-\\[\\]-~]+$"
     }
   }
 }
