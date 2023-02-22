@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "patternProperties": {
+    "^[A-Z][A-Za-z0-9_]+Client": {
+      "description": "Configurazione client HTTP (auto-generato).",
+      "type": "object",
+      "required": [ "BaseAddress" ],
+      "properties": {
+        "BaseAddress": {
+          "description": "Base URL di destinazione.\nAvailable since: CodeGen v1.0.0",
+          "type": "string",
+          "format": "uri",
+          "default": "http://example.com/api"
+        },
+        "UserClient": {
+          "description": "Configurazione client utente.\nAvailable since: CodeGen v1.3.0",
+          "type": "object",
+          "properties": {
+            "Policy": {
+              "description": "Policy per riprovare in caso di errori.\nAvailable since: CodeGen v1.3.0",
+              "allOf": [{ "$ref": "./Alad.Utility.Polly.json#/definitions/PolicyConfiguration" }]
+            }
+          }
+        },
+        "TechnicalClient": {
+          "description": "Configurazione client tecnico.\nAvailable since: CodeGen v1.3.0",
+          "type": "object",
+          "properties": {
+            "Policy": {
+              "description": "Policy per riprovare in caso di errori.\nAvailable since: CodeGen v1.3.0",
+              "allOf": [{ "$ref": "./Alad.Utility.Polly.json#/definitions/PolicyConfiguration" }]
+            }
+          }
+        }
+      }
+    }
+  }
+}
