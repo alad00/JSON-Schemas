@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "definitions": {
+    "_BootstrapServers": {
+      "description": "Initial list of brokers as a CSV list of broker host or host:port.\nAvailable since: v2.0.1",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "Kafka": {
+      "description": "Configurazione Kafka.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.EventStreams",
+      "type": "object",
+      "required": ["AdminClient", "Topics"],
+      "anyOf": [{
+        "required": ["ConsumerClient"]
+      }, {
+        "required": ["ProducerClient", "ProducerService"]
+      }],
+      "properties": {
+        "AdminClient": {
+          "description": "Available since: v2.0.1",
+          "type": "object",
+          "required": ["BootstrapServers"],
+          "properties": {
+            "BootstrapServers": { "$ref": "#/definitions/_BootstrapServers" }
+          }
+        },
+        "ConsumerClient": {
+          "description": "Available since: v2.0.1",
+          "type": "object",
+          "required": ["BootstrapServers", "GroupId"],
+          "properties": {
+            "BootstrapServers": { "$ref": "#/definitions/_BootstrapServers" },
+            "GroupId": {
+              "description": "Available since: v2.0.1",
+              "type": "string"
+            },
+            "NumIterations": {
+              "description": "Numero di iterazioni in caso di errore nell'elaborazione di un messaggio.\nAvailable since: v2.0.1",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5,
+              "default": 1
+            },
+            "IterationsTimeoutMs": {
+              "description": "Millisecondi di attesa tra le iterazioni.\nAvailable since: v2.0.1",
+              "type": "integer",
+              "minimum": 1000,
+              "maximum": 30000,
+              "default": 1000
+            }
+          }
+        },
+        "ProducerClient": {
+          "description": "Available since: v2.0.1",
+          "type": "object",
+          "required": ["BootstrapServers"],
+          "properties": {
+            "BootstrapServers": { "$ref": "#/definitions/_BootstrapServers" },
+            "TransactionTimeoutMs": {
+              "description": "The maximum amount of time in milliseconds that the transaction coordinator will wait for a transaction status update from the producer before proactively aborting the ongoing transaction. If this value is larger than the `transaction.max.timeout.ms` setting in the broker, the init_transactions() call will fail with ERR_INVALID_TRANSACTION_TIMEOUT. The transaction timeout automatically adjusts `message.timeout.ms` and `socket.timeout.ms`, unless explicitly configured in which case they must not exceed the transaction timeout (`socket.timeout.ms` must be at least 100ms lower than `transaction.timeout.ms`). This is also the default timeout value if no timeout (-1) is supplied to the transactional API methods.\nAvailable since: v2.0.1",
+              "type": "integer",
+              "default": 10000
+            }
+          }
+        },
+        "ProducerService": {
+          "description": "Available since: v2.0.1",
+          "type": "object",
+          "properties": {
+            "DelaySeconds": {
+              "description": "Secondi di attesa per la prima chiamata metodo ExecuteTask.\nAvailable since: v2.0.1",
+              "type": "integer",
+              "default": 60
+            },
+            "IntervalSeconds": {
+              "description": "Secondi di attesa tra le chiamate al metodo ExecuteTask.\nAvailable since: v2.0.1",
+              "type": "integer",
+              "default": 60
+            }
+          }
+        },
+        "Topics": {
+          "description": "Available since: v2.0.1",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
