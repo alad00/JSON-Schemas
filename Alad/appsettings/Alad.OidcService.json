@@ -204,7 +204,8 @@
           "type": "array",
           "items": {
             "type": "string",
-            "format": "uri"
+            "format": "uri",
+            "pattern": "(\nDeve avere un path (aggiungere '/').\n\n){0}^[^:]+:/*[^/]+/"
           }
         },
         "Scopes": {
