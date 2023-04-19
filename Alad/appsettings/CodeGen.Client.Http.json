@@ -25,7 +25,7 @@
           "default": "http://example.com/api"
         },
         "Certificates": {
-          "description": "Configurazione certificati.\nSe 'null', viene utilizzata la configurazione globale.\nAvailable since: CodeGen v1.6.0-beta-certificates",
+          "description": "Configurazione certificati.\nSe 'null', viene utilizzata la configurazione globale.\nAvailable since: CodeGen v1.6.0",
           "anyOf": [
             { "type": "null" },
             { "$ref": "./Alad.Certificates.json#/definitions/CertificateBaseOptions" }
