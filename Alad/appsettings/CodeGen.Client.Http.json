@@ -1,6 +1,17 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "type": "object",
+  "definitions": {
+    "__client": {
+      "type": "object",
+      "properties": {
+        "Policy": {
+          "description": "Policy per riprovare in caso di errori.\nAvailable since: CodeGen v1.3.0",
+          "allOf": [{ "$ref": "./Alad.Utility.Polly.json#/definitions/PolicyConfiguration" }]
+        }
+      }
+    }
+  },
   "patternProperties": {
     "^[A-Z][A-Za-z0-9_]+Client": {
       "description": "Configurazione client HTTP (auto-generato).",
@@ -13,26 +24,28 @@
           "format": "uri",
           "default": "http://example.com/api"
         },
+        "Certificates": {
+          "description": "Configurazione certificati.\nSe 'null', viene utilizzata la configurazione globale.\nAvailable since: CodeGen v1.6.0-beta-certificates",
+          "anyOf": [
+            { "type": "null" },
+            { "$ref": "./Alad.Certificates.json#/definitions/CertificateBaseOptions" }
+          ]
+        },
         "UserClient": {
-          "description": "Configurazione client utente.\nAvailable since: CodeGen v1.3.0",
-          "type": "object",
-          "properties": {
-            "Policy": {
-              "description": "Policy per riprovare in caso di errori.\nAvailable since: CodeGen v1.3.0",
-              "allOf": [{ "$ref": "./Alad.Utility.Polly.json#/definitions/PolicyConfiguration" }]
-            }
-          }
+          "description": "Configurazione client utente.\nAutenticazione OIDC Alad con identità e permessi dell'utente.\nAvailable since: CodeGen v1.3.0",
+          "allOf": [
+            { "$ref": "#/definitions/__client" }
+          ]
         },
         "TechnicalClient": {
-          "description": "Configurazione client tecnico.\nAvailable since: CodeGen v1.3.0",
-          "type": "object",
-          "properties": {
-            "Policy": {
-              "description": "Policy per riprovare in caso di errori.\nAvailable since: CodeGen v1.3.0",
-              "allOf": [{ "$ref": "./Alad.Utility.Polly.json#/definitions/PolicyConfiguration" }]
-            }
-          }
+          "description": "Configurazione client tecnico\n.Autenticazione OIDC Alad con identità e permessi del microservizio.\nAvailable since: CodeGen v1.3.0",
+          "allOf": [
+            { "$ref": "#/definitions/__client" }
+          ]
         }
+      },
+      "patternProperties": {
+        "^[A-Z][A-Za-z0-9_]+Client": { "$ref": "#/definitions/__client" }
       }
     }
   }
