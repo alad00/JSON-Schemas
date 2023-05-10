@@ -13,13 +13,13 @@
             "type": "string"
           },
           "DatabaseType": {
-            "description": "Tipo di database da utilizzare.\nAvailable since: v1.1.0",
+            "description": "Tipo di database da utilizzare.\nAvailable since: v1.1.0 ('PostgreSql' since v1.7.0)",
             "default": "SqlServer",
             "type": "string",
-            "enum": ["SqlServer", "Oracle"]
+            "enum": ["SqlServer", "Oracle", "PostgreSql"]
           },
           "ConnectionString": {
-            "description": "Stringa di connessione al database.\nhttps://learn.microsoft.com/dotnet/api/system.data.sqlclient.sqlconnection.connectionstring\nhttps://docs.oracle.com/en/database/oracle/oracle-database/19/odpnt/ConnectionConnectionString.html\nAvailable since: v1.1.0",
+            "description": "Stringa di connessione al database.\nhttps://learn.microsoft.com/dotnet/api/system.data.sqlclient.sqlconnection.connectionstring\nhttps://docs.oracle.com/en/database/oracle/oracle-database/19/odpnt/ConnectionConnectionString.html\nhttps://www.npgsql.org/doc/connection-string-parameters.html\nAvailable since: v1.1.0",
             "type": "string"
           },
           "DefaultSchema": {
