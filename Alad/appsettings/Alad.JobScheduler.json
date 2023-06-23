@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "definitions": {
+    "_role-id": {
+      "description": "Identificativo ruolo ASP.NET Core.",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "JobScheduler": {
+      "description": "Configurazione job scheduler (Alad.JobScheduler).\nhttps://github.com/alad00/Alad.JobScheduler",
+      "type": "object",
+      "required": ["HookEndpoint", "JobTokenSalt"],
+      "properties": {
+        "HookEndpoint": {
+          "description": "Endpoint di callback per job completati.\nI placeholder '{group}' e '{job}' vengono rispettivamente sostituiti con gruppo e nome del job.\nAvailable since: v1.0.0",
+          "type": "string",
+          "format": "uri",
+          "default": "http://localhost:5000/hook/{group}/{job}"
+        },
+        "JobTokenSalt": {
+          "description": "Valore costante libero, utilizzato come sale per i job-token utilizzati per fare callback tramite web-hook.\nAvailable since: v1.0.0",
+          "type": "string",
+          "default": "example"
+        },
+        "JobClient": {
+          "description": "Configurazione client HTTP utilizzato per eseguire i job.\nAvailable since: v1.0.0",
+          "type": "object",
+          "properties": {
+            "Authentication": {
+              "description": "Configurazione autenticazione.\nAvailable since: v1.0.0",
+              "type": "object",
+              "properties": {
+                "Enabled": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "Certificates": {
+              "description": "Configurazione certificati.\nSe 'null', viene utilizzata la configurazione globale.\nAvailable since: v1.0.0",
+              "anyOf": [
+                { "type": "null" },
+                { "$ref": "./Alad.Certificates.json#/definitions/CertificateBaseOptions" }
+              ]
+            },
+            "Policy": {
+              "description": "Policy per riprovare in caso di errori.\nAvailable since: v1.0.0",
+              "allOf": [{ "$ref": "./Alad.Utility.Polly.json#/definitions/PolicyConfiguration" }]
+            }
+          }
+        },
+        "Roles": {
+          "description": "Roles necessari per accedere alle funzionalità di questo microservizio.\nSe 'null' o vuoto, l'accesso è consentito a tutti gli utenti autenticati.\nAvailable since: v1.0.0",
+          "type": "object",
+          "properties": {
+            "Administration": {
+              "description": "Ruoli che hanno accesso alle funzioni di amministrazione (creazione/modifica/cancellazione di job, flussi e trigger).\nAvailable since: v1.0.0",
+              "type": ["array", "null"],
+              "items": { "$ref": "#/definitions/_role-id" }
+            },
+            "Monitoring": {
+              "description": "Ruoli che hanno accesso alle funzioni di monitoraggio (verifica stato di esecuzione di job e flussi, status codes e messaggi di errore).\nAvailable since: v1.0.0",
+              "type": ["array", "null"],
+              "items": { "$ref": "#/definitions/_role-id" }
+            },
+            "Trigger": {
+              "description": "Ruoli autorizzati ad invocare trigger REST.\nAvailable since: v1.0.0",
+              "type": ["array", "null"],
+              "items": { "$ref": "#/definitions/_role-id" }
+            },
+            "Hook": {
+              "description": "Ruoli autorizzati ad effettuare callback tramite web-hook.\nÈ consigliato lasciare questo valore a 'null' o vuoto (accesso consentito a tutti gli utenti autenticati) in quanto per effettuare il callback è necessario anche il token segreto.\nAvailable since: v1.0.0",
+              "type": ["array", "null"],
+              "items": { "$ref": "#/definitions/_role-id" },
+              "default": null
+            }
+          }
+        }
+      }
+    }
+  }
+}
