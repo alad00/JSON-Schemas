@@ -175,6 +175,98 @@
           }
         }
       }
+    },
+    "certificates": {
+      "type": "object",
+      "properties": {
+        "UseDevelopmentCertificates": {
+          "description": "Utilizza certificati di sviluppo generati automaticamente.",
+          "type": "boolean"
+        },
+        "AutoShutdownOnExpiration": {
+          "description": "Spegne automaticamente questo servizio qualche minuto prima della scadenza dell'ultimo certificato.\nUtile per ricaricare o rigenerare automaticamente i certificati; per essere efficace necessita di un watcher che lo riavvii.",
+          "type": "boolean"
+        },
+        "Certificates": {
+          "description": "Certificates configuration.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "AutoGenerate": {
+                "description": "Rigenera automaticamente il certificato quando è prossimo alla scadenza.\nÈ consigliato configurare almeno due certificati per ciascun tipo, questo permette di ruotarli garantendo che ce ne sia sempre almeno uno valido.",
+                "type": "boolean"
+              }
+            },
+            "oneOf": [{
+              "required": ["Path"],
+              "properties": {
+                "Path": {
+                  "description": "The certificate file path. If a file path is specified then the certificate will be loaded from the file system.",
+                  "type": "string"
+                },
+                "KeyPath": {
+                  "description": "The certificate key file path.",
+                  "type": ["string", "null"]
+                },
+                "Password": {
+                  "description": "The certificate password used to access the private key.",
+                  "type": ["string", "null"]
+                }
+              }
+            }, {
+              "required": ["Subject"],
+              "properties": {
+                "Subject": {
+                  "description": "The certificate subject. If a subject is specified then the certificate will be loaded from the certificate store.",
+                  "type": "string"
+                },
+                "Store": {
+                  "description": "The certificate store name. Defaults to 'My'.",
+                  "type": "string",
+                  "default": "My"
+                },
+                "Location": {
+                  "description": "The certificate store location. Defaults to 'CurrentUser'.",
+                  "type": "string",
+                  "enum": ["LocalMachine", "CurrentUser"],
+                  "default": "CurrentUser"
+                },
+                "AllowInvalid": {
+                  "description": "A value indicating whether or not to load certificates that are considered invalid. Defaults to false.",
+                  "type": "boolean",
+                  "default": false
+                }
+              }
+            }, {
+              "required": ["KubernetesSecretName"],
+              "properties": {
+                "KubernetesSecretName": {
+                  "description": "Secret di Kubernetes.\nSe indicato, il certificato verrà caricato da questo secret.",
+                  "type": "string"
+                },
+                "KubernetesSecretNamespace": {
+                  "description": "Namespace del secret di Kubernetes.\nSe non indicato, usa il namespace del pod in esecuzione.",
+                  "type": ["string", "null"]
+                },
+                "KubernetesSecretKey": {
+                  "description": "Chiave all'interno del secret di Kubernetes.",
+                  "type": "string",
+                  "default": "pfx"
+                },
+                "KeyPath": {
+                  "description": "The certificate key file path.",
+                  "type": ["string", "null"]
+                },
+                "Password": {
+                  "description": "The certificate password used to access the private key.",
+                  "type": ["string", "null"]
+                }
+              }
+            }]
+          }
+        }
+      }
     }
   },
   "type": "object",
@@ -217,6 +309,26 @@
           "description": "Applicazioni autorizzate ad utilizzare questo servizio, e relative credenziali.",
           "type": "array",
           "items": { "$ref": "#/definitions/application" }
+        },
+        "Certificates": {
+          "description": "Configurazione certificati.\nAvailable since: v1.0.0",
+          "type": "object",
+          "properties": {
+            "Encryption": {
+              "allOf": [{
+                "description": "Configurazione certificati di crittografia."
+              }, {
+                "$ref": "#/definitions/certificates"
+              }]
+            },
+            "Signing": {
+              "allOf": [{
+                "description": "Configurazione certificati per le firme."
+              }, {
+                "$ref": "#/definitions/certificates"
+              }]
+            }
+          }
         }
       }
     }
