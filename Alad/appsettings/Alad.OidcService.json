@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
   "definitions": {
     "scope-id": {
       "$ref": "../definitions/oidc.json#/definitions/scope-token"
@@ -269,68 +270,72 @@
       }
     }
   },
-  "type": "object",
-  "properties": {
-    "AuthorizationService": {
-      "description": "Configurazione Alad.OidcService.\nhttps://github.com/alad00/Alad.OidcService",
-      "type": "object",
-      "required": ["AuthenticationMethods", "ValidIssuers", "Scopes", "Applications"],
+  "allOf": [
+    { "$ref": "./definitions/api-service-base.json" },
+    {
       "properties": {
-        "AuthenticationMethods": {
-          "description": "Configurazione dei metodi di autenticazione built-in supportati da questo servizio.",
+        "AuthorizationService": {
+          "description": "Configurazione Alad.OidcService.\nhttps://github.com/alad00/Alad.OidcService",
           "type": "object",
+          "required": ["AuthenticationMethods", "ValidIssuers", "Scopes", "Applications"],
           "properties": {
-            "Hardcoded": { "$ref": "#/definitions/auth-hardcoded" },
-            "AzureAD": {
-              "type": "array",
-              "items": { "$ref": "#/definitions/auth-azuread" }
+            "AuthenticationMethods": {
+              "description": "Configurazione dei metodi di autenticazione built-in supportati da questo servizio.",
+              "type": "object",
+              "properties": {
+                "Hardcoded": { "$ref": "#/definitions/auth-hardcoded" },
+                "AzureAD": {
+                  "type": "array",
+                  "items": { "$ref": "#/definitions/auth-azuread" }
+                },
+                "Oidc": {
+                  "type": "array",
+                  "items": { "$ref": "#/definitions/auth-oidc" }
+                }
+              }
             },
-            "Oidc": {
+            "ValidIssuers": {
+              "description": "Indirizzi dai quali il server OIDC è accessibile.\nSe il server OIDC è accessibile su più indirizzi, qua devono essere indicati tutti gli indirizzi validi.",
               "type": "array",
-              "items": { "$ref": "#/definitions/auth-oidc" }
-            }
-          }
-        },
-        "ValidIssuers": {
-          "description": "Indirizzi dai quali il server OIDC è accessibile.\nSe il server OIDC è accessibile su più indirizzi, qua devono essere indicati tutti gli indirizzi validi.",
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "uri",
-            "pattern": "(\nDeve avere un path (aggiungere '/').\n\n){0}^[^:]+:/*[^/]+/"
-          }
-        },
-        "Scopes": {
-          "description": "Scopes gestiti in questo servizio.",
-          "type": "array",
-          "items": { "$ref": "#/definitions/scope" }
-        },
-        "Applications": {
-          "description": "Applicazioni autorizzate ad utilizzare questo servizio, e relative credenziali.",
-          "type": "array",
-          "items": { "$ref": "#/definitions/application" }
-        },
-        "Certificates": {
-          "description": "Configurazione certificati.\nAvailable since: v1.0.0",
-          "type": "object",
-          "properties": {
-            "Encryption": {
-              "allOf": [{
-                "description": "Configurazione certificati di crittografia."
-              }, {
-                "$ref": "#/definitions/certificates"
-              }]
+              "items": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "(\nDeve avere un path (aggiungere '/').\n\n){0}^[^:]+:/*[^/]+/"
+              }
             },
-            "Signing": {
-              "allOf": [{
-                "description": "Configurazione certificati per le firme."
-              }, {
-                "$ref": "#/definitions/certificates"
-              }]
+            "Scopes": {
+              "description": "Scopes gestiti in questo servizio.",
+              "type": "array",
+              "items": { "$ref": "#/definitions/scope" }
+            },
+            "Applications": {
+              "description": "Applicazioni autorizzate ad utilizzare questo servizio, e relative credenziali.",
+              "type": "array",
+              "items": { "$ref": "#/definitions/application" }
+            },
+            "Certificates": {
+              "description": "Configurazione certificati.\nAvailable since: v1.0.0",
+              "type": "object",
+              "properties": {
+                "Encryption": {
+                  "allOf": [{
+                    "description": "Configurazione certificati di crittografia."
+                  }, {
+                    "$ref": "#/definitions/certificates"
+                  }]
+                },
+                "Signing": {
+                  "allOf": [{
+                    "description": "Configurazione certificati per le firme."
+                  }, {
+                    "$ref": "#/definitions/certificates"
+                  }]
+                }
+              }
             }
           }
         }
       }
     }
-  }
+  ]
 }

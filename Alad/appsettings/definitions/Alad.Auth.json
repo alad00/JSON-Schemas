@@ -3,7 +3,7 @@
   "type": "object",
   "definitions": {
     "scope-id": {
-      "$ref": "../definitions/oidc.json#/definitions/scope-token"
+      "$ref": "../../definitions/oidc.json#/definitions/scope-token"
     }
   },
   "properties": {
@@ -60,7 +60,7 @@
         "RequireScopes": {
           "description": "Scopes OIDC necessari per fare richieste a questo servizio REST.\nAvailable since: v1.6.0",
           "type": "array",
-          "items": { "$ref": "../definitions/oidc.json#/definitions/scope-token" }
+          "items": { "$ref": "#/definitions/scope-id" }
         }
       }
     }

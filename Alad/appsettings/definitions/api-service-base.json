@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "allOf": [
+    { "$ref": "https://json.schemastore.org/appsettings.json" },
+    { "$ref": "./Alad.Auth.json" },
+    { "$ref": "./Alad.Certificates.json" },
+    { "$ref": "./Alad.Database.json" },
+    { "$ref": "./Alad.EventStreams.json" },
+    { "$ref": "./Alad.Logging.json" },
+    { "$ref": "./Alad.Servlets.json" },
+    { "$ref": "./Alad.Utility.HealthChecks.json" },
+    { "$ref": "./Alad.Utility.Security.json" },
+    { "$ref": "./Alad.Utility.Swagger.json" }
+  ]
+}

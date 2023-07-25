@@ -17,7 +17,7 @@
           "description": "The median delay to target before the first retry.\nAvailable since: v1.1.0\nhttps://github.com/Polly-Contrib/Polly.Contrib.WaitAndRetry/blob/63544b79349239295e3f11b7a2ded9bc5a5270d6/src/Polly.Contrib.WaitAndRetry/Backoff.DecorrelatedJitterV2.cs#L13-L17",
           "type": "string",
           "default": "00:00:01",
-          "allOf": [{ "$ref": "../definitions/System.json#/definitions/TimeSpan" }]
+          "allOf": [{ "$ref": "../../definitions/System.json#/definitions/TimeSpan" }]
         }
       }
     },
@@ -27,7 +27,7 @@
           "description": "Tempo di attesa tra un tentativo e l'altro.\nAvailable since: v1.1.0",
           "type": "string",
           "default": "00:00:01",
-          "allOf": [{ "$ref": "../definitions/System.json#/definitions/TimeSpan" }]
+          "allOf": [{ "$ref": "../../definitions/System.json#/definitions/TimeSpan" }]
         }
       }
     },
@@ -37,7 +37,7 @@
           "description": "Tempo di attesa prima di riprovare la prima volta.\nAvailable since: v1.1.0",
           "type": "string",
           "default": "00:00:01",
-          "allOf": [{ "$ref": "../definitions/System.json#/definitions/TimeSpan" }]
+          "allOf": [{ "$ref": "../../definitions/System.json#/definitions/TimeSpan" }]
         }
       }
     },
@@ -47,7 +47,7 @@
           "description": "Tempo di attesa minimo prima di riprovare.\nAvailable since: v1.1.0",
           "type": "string",
           "default": "00:00:00",
-          "anyOf": [{ "$ref": "../definitions/System.json#/definitions/TimeSpan" }]
+          "anyOf": [{ "$ref": "../../definitions/System.json#/definitions/TimeSpan" }]
         }
       }
     },
@@ -58,7 +58,7 @@
           "type": [ "string", "null" ],
           "default": null,
           "anyOf": [
-            { "$ref": "../definitions/System.json#/definitions/TimeSpan" },
+            { "$ref": "../../definitions/System.json#/definitions/TimeSpan" },
             { "const": null }
           ]
         }
