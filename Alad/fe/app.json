@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "definitions": {
+    "_AladThemeType": {
+      "enum": [
+        "standard",
+        "greenlife",
+        "base",
+        "matcha",
+        "pastel",
+        "spectrum"
+      ]
+    }
+  },
+  "required": ["authAuthority", "clientId"],
+  "properties": {
+    "authAuthority": {
+      "description": "OIDC URI",
+      "type": "string",
+      "format": "uri",
+      "default" : "https://localhost:7065/"
+    },
+    "clientId": {
+      "description": "OIDC client_id",
+      "type": "string"
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "$ref": "../definitions/oidc.json#/definitions/scope-token"
+      }
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uri_base": {
+            "type": "string",
+            "default": "localhost:1234"
+          },
+          "uri_path": {
+            "type": "string",
+            "default": "webapi/"
+          }
+        }
+      }
+    },
+    "uris": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "defaultTheme": { "$ref": "#/definitions/_AladThemeType" },
+    "defaultThemeModeDark": {
+      "type": "boolean"
+    },
+    "enabledThemes": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/_AladThemeType" }
+    }
+  }
+}
