@@ -54,6 +54,11 @@
           "type": "array",
           "items": { "$ref": "#/definitions/scope-id" }
         },
+        "Roles": {
+          "description": "Lista di ruoli ASP.NET Core dell'utenza tecnica di questa applicazione.\nQuesto servizio potrà fare chiamate REST agli endpoint che richiedono questi ruoli ASP.NET Core.\nPer questioni di sicurezza, questi ruoli sono validi solo per l'utenza tecnica di questa applicazione, non vengono ereditati dagli utenti che si autenticano tramite il frontend di questa applicazione.\n\nAvailable since: v1.3.0",
+          "type": "array",
+          "items": { "$ref": "#/definitions/role-id" }
+        },
         "RedirectUris": {
           "description": "Indirizzi di ritorno previsti dal protocollo OIDC.\nPer identificare questi indirizzi, fare riferimento alla documentazione del client (Swagger/Postman), oppure della libreria di autenticazione utilizzata nel servizio o frontend.",
           "type": "array",
