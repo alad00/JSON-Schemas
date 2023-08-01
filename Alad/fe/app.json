@@ -13,7 +13,7 @@
       ]
     }
   },
-  "required": ["authAuthority", "clientId"],
+  "required": ["authAuthority", "clientId", "defaultLocale"],
   "properties": {
     "authAuthority": {
       "description": "OIDC URI",
@@ -63,6 +63,16 @@
     "enabledThemes": {
       "type": "array",
       "items": { "$ref": "#/definitions/_AladThemeType" }
+    },
+    "defaultLogo": {
+      "type": "string"
+    },
+    "defaultLocale": {
+      "description": "Localizzazione da utilizzare qualora la localizzazione del client non sia tra quelle previste dall'applicativo.",
+      "type": "string"
+    },
+    "forcedLocale": {
+      "type": "string"
     }
   }
 }
