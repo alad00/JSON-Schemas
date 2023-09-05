@@ -80,6 +80,48 @@
                   "default": null
                 }
               }
+            },
+            "BasicAuth": {
+              "description": "Utenti con autenticazione \"Basic\", per integrazione con servizi esterni.\nAvailable since: v1.4.0",
+              "type": "object",
+              "propertyNames": {
+                "pattern": "(\nNon può contenere ':' o spazi.\n\n){0}^[^: ]+$"
+              },
+              "additionalProperties": {
+                "allOf": [{
+                  "oneOf": [{
+                    "required": ["PasswordPlain"],
+                    "properties": {
+                      "PasswordPlain": {
+                        "description": "Password in chiaro.",
+                        "type": "string"
+                      }
+                    }
+                  }, {
+                    "required": ["PasswordSalt", "PasswordHash"],
+                    "properties": {
+                      "PasswordSalt": {
+                        "description": "Sale usato come suffisso alla password per calcolare l'hash.\nDefault: \"\" (nessun sale)",
+                        "type": "string"
+                      },
+                      "PasswordHash": {
+                        "description": "Hash dei password e sale, calcolato come `sha256(utf8(password + salt))`.",
+                        "type": "string",
+                        "pattern": "(\nDeve essere un SHA256 in esadecimale.\n\n){0}^[0-9a-fA-F]{64}$"
+                      }
+                    }
+                  }]
+                }, {
+                  "description": "Utente con autenticazione \"Basic\", per integrazione con servizi esterni.",
+                  "properties": {
+                    "Roles": {
+                      "description": "Ruoli associati a questo utente.",
+                      "type": "array",
+                      "items": { "$ref": "#/definitions/_role-id" }
+                    }
+                  }
+                }]
+              }
             }
           }
         }
