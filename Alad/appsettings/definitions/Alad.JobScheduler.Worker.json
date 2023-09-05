@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "JobWorker": {
+      "description": "Configurazione Alad.JobScheduler.Worker.\nhttps://github.com/alad00/Alad.JobScheduler/tree/main/src/Alad.JobScheduler.Worker",
+      "type": "object",
+      "properties": {
+        "MaxQueueLength": {
+          "description": "Lunghezza massima della coda di esecuzione prima di cominciare a rifiutare ulteriori inserimenti.\nDefault: 100\nAvailable since: v1.3.0",
+          "type": "integer",
+          "default": 100
+        },
+        "DegreeOfParallelism": {
+          "description": "Numero massimo di esecuzioni in parallelo.\nSe null, si regola in base a CPU e memoria disponibili.\nDefault: null\nAvailable since: v1.3.0",
+          "type": ["null", "integer"],
+          "default": null
+        }
+      }
+    }
+  }
+}

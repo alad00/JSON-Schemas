@@ -14,6 +14,7 @@
   },
   "allOf": [
     { "$ref": "./definitions/api-service-base.json" },
+    { "$ref": "./definitions/Alad.JobScheduler.Worker.json" },
     {
       "patternProperties": {
         "^[A-Z][A-Za-z0-9_]+Client": {
