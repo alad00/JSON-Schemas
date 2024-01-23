@@ -43,9 +43,13 @@
             "type": "string",
             "default": "localhost:1234"
           },
-          "uri_path": {
+          "restApiPath": {
             "type": "string",
             "default": "webapi/"
+          },
+          "graphqlApiPath": {
+            "type": "string",
+            "default": "webapi/serviceGQL/"
           }
         }
       }
@@ -73,6 +77,37 @@
     },
     "forcedLocale": {
       "type": "string"
+    },
+    "settingsClientId":{
+      "type": "string",
+      "description": "Prefisso settings."
+    },
+    "listaIstituti": {
+    },
+    "linkExtApp": {
+    },
+    "notifications": {
+      "type": "object",
+      "authority":{
+        "type": "string",
+        "description": "URL authority del servizio di notifiche.",
+        "default": "localhost:1234"
+      },
+      "contextPath":{
+        "type": "string",
+        "description": "Context Path del URL.",
+        "default": "api/"
+      },
+      "topics":{
+        "type": "array",
+        "description": "Argomenti delle notifiche.",
+        "default": "[\"tapic1\"]"
+      },
+      "limit":{
+        "type": "integer",
+        "description": "Limite numeto notifiche per richiesta.",
+        "default": "20"
+      }
     }
   }
 }
