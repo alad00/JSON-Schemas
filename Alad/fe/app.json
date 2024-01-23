@@ -105,7 +105,7 @@
       },
       "limit":{
         "type": "integer",
-        "description": "Limite numeto notifiche per richiesta.",
+        "description": "Limite numero notifiche per richiesta.",
         "default": "20"
       }
     }
