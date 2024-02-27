@@ -98,6 +98,11 @@
           "default": false
         }
       }
+    },
+    "PathBase": {
+      "description": "\"Path base\" per proxy e load-balancer.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.ForwardedHeaders\nAvailable since: v1.1.0",
+      "type": "string",
+      "default": "/"
     }
   }
 }
