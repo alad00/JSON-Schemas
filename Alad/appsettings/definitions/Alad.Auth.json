@@ -17,6 +17,11 @@
           "type": "string",
           "format": "uri"
         },
+        "RequireHttps": {
+          "description": "Specifies if HTTPS is enforced on all endpoints. Defaults to true.\nAvailable since: v1.7.0",
+          "type": "boolean",
+          "default": true
+        },
         "ClientId": {
           "description": "'client_id' OIDC utilizzato per validare le richieste in arrivo.",
           "type": "string"
