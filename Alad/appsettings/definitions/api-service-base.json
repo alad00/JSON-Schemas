@@ -9,8 +9,8 @@
     { "$ref": "./Alad.EventStreams.json" },
     { "$ref": "./Alad.Logging.json" },
     { "$ref": "./Alad.Servlets.json" },
-    { "$ref": "./Alad.Utility.ForwardedHeaders.json" },
     { "$ref": "./Alad.Utility.HealthChecks.json" },
+    { "$ref": "./Alad.Utility.ProxyLoadBalancer.json" },
     { "$ref": "./Alad.Utility.Security.json" },
     { "$ref": "./Alad.Utility.Swagger.json" }
   ]

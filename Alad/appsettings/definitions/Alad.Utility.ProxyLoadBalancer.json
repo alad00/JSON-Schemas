@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "ForwardedHeaders": {
-      "description": "Configurazione Alad.Utility.ForwardedHeaders per proxy e load-balancer.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.ForwardedHeaders",
+      "description": "Configurazione Alad.Utility.ProxyLoadBalancer per proxy e load-balancer.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.ProxyLoadBalancer",
       "type": "object",
       "required": ["ForwardedHeaders"],
       "properties": {
@@ -100,9 +100,26 @@
       }
     },
     "PathBase": {
-      "description": "\"Path base\" per proxy e load-balancer.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.ForwardedHeaders\nAvailable since: v1.1.0",
+      "description": "\"Path base\" per proxy e load-balancer.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.ProxyLoadBalancer",
       "type": "string",
       "default": "/"
+    },
+    "CertificateForwarding": {
+      "description": "Configurazione Alad.Utility.ProxyLoadBalancer certificati client (mTLS) da proxy e load-balancer.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.ProxyLoadBalancer",
+      "type": "object",
+      "required": ["Enabled"],
+      "properties": {
+        "Enabled": {
+          "description": "Abilita ricezione di certificati client da proxy e load-balancer.\nAbilitare questa opzione solo se questo servizio è raggiungibile dall'esterno SOLAMENTE tramite proxy, ed assicurarsi che i proxy siano configurati correttamente prima di abilitare questa opzione; accettare certificati client da un proxy non configurato correttamente potrebbe compromettere la sicurezza del sistema.",
+          "type": "boolean",
+          "default": false
+        },
+        "CertificateHeader": {
+          "description": "The name of the header containing the client certificate.",
+          "type": "string",
+          "default": "X-Client-Cert"
+        }
+      }
     }
   }
 }
