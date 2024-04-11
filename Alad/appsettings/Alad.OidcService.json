@@ -20,9 +20,8 @@
     "scope": {
       "description": "Scope OIDC.",
       "type": "object",
-      "required": ["Id", "Applications"],
+      "required": ["Applications"],
       "properties": {
-        "Id": { "$ref": "#/definitions/scope-id" },
         "Resources": {
           "description": "Risorse che fanno parte di questo scope.",
           "type": "array",
@@ -38,9 +37,8 @@
     "application": {
       "description": "Applicazione (un servizio web con API REST, oppure un frontend web, oppure un client tipo Swagger o Postman).",
       "type": "object",
-      "required": ["Id", "ClientId"],
+      "required": ["ClientId"],
       "properties": {
-        "Id": { "$ref": "#/definitions/application-id" },
         "ClientId": {
           "description": "Identificativo utilizzato dal servizio OIDC per identificare le richieste provenienti dall'applicazione. Per le applicazioni server (servizi) è trattato come uno username.",
           "type": "string"
@@ -309,14 +307,57 @@
               }
             },
             "Scopes": {
-              "description": "Scopes gestiti in questo servizio.",
-              "type": "array",
-              "items": { "$ref": "#/definitions/scope" }
+              "oneOf": [{
+                "description": "Scopes gestiti in questo servizio.\nAvailable since: v2.1.3 (array nelle versioni precedenti)",
+                "type": "object",
+                "propertyNames": { "$ref": "#/definitions/scope-id" },
+                "additionalProperties": { "$ref": "#/definitions/scope" }
+              }, {
+                "description": "Scopes gestiti in questo servizio.\nNOTA: dalla versione 2.1.3 è consigliato usare un oggetto con chiave l'Id dello scope, piuttosto che un array. La configurazione come array potrebbe essere rimossa in una versione futura.\nDeprecated since: v2.1.3",
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "required": ["Id"],
+                      "properties": {
+                        "Id": {
+                          "description": "Scope OIDC.\nNOTA: dalla versione 2.1.3 è consigliato usare un oggetto con chiave l'Id dell'applicazione, piuttosto che un array. La configurazione come array potrebbe essere rimossa in una versione futura.\nDeprecated since: v2.1.3",
+                          "type": "string",
+                          "pattern": "(\nSolo caratteri ASCII stampabili ad eccezione di spazio, \" e \\.\n\n){0}^[!#-\\[\\]-~]+$",
+                          "deprecated": true
+                        }
+                      }
+                    },
+                    { "$ref": "#/definitions/scope" }
+                  ]
+                }
+              }]
             },
             "Applications": {
-              "description": "Applicazioni autorizzate ad utilizzare questo servizio, e relative credenziali.",
-              "type": "array",
-              "items": { "$ref": "#/definitions/application" }
+              "oneOf": [{
+                "description": "Applicazioni autorizzate ad utilizzare questo servizio, e relative credenziali.\nAvailable since: v2.1.3 (array nelle versioni precedenti)",
+                "type": "object",
+                "propertyNames": { "$ref": "#/definitions/application-id" },
+                "additionalProperties": { "$ref": "#/definitions/application" }
+              }, {
+                "description": "Applicazioni autorizzate ad utilizzare questo servizio, e relative credenziali.\nNOTA: dalla versione 2.1.3 è consigliato usare un oggetto con chiave l'Id dell'applicazione, piuttosto che un array. La configurazione come array potrebbe essere rimossa in una versione futura.\nDeprecated since: v2.1.3",
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "required": ["Id"],
+                      "properties": {
+                        "Id": {
+                          "description": "Identificativo applicazione, preferibilmente alfanumerico lowercase con trattini come separatori.\nNOTA: dalla versione 2.1.3 è consigliato usare un oggetto con chiave l'Id dell'applicazione, piuttosto che un array. La configurazione come array potrebbe essere rimossa in una versione futura.\nDeprecated since: v2.1.3",
+                          "type": "string",
+                          "deprecated": true
+                        }
+                      }
+                    },
+                    { "$ref": "#/definitions/application" }
+                  ]
+                }
+              }]
             },
             "Certificates": {
               "description": "Configurazione certificati.\nAvailable since: v1.0.0",
