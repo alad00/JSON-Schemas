@@ -100,9 +100,36 @@
       }
     },
     "PathBase": {
-      "description": "\"Path base\" per proxy e load-balancer.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.ProxyLoadBalancer",
+      "description": "\"Path base\" per proxy e load-balancer.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.ProxyLoadBalancer\nNOTA: deprecato dalla versione 1.1.0, usare 'Hosting'.\nDeprecated since: v1.1.0",
       "type": "string",
+      "deprecated": true,
       "default": "/"
+    },
+    "Hosting": {
+      "description": "Impostazioni hosting per proxy e load-balancer.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.ProxyLoadBalancer\nAvailable since: v1.1.0",
+      "type": "object",
+      "properties": {
+        "Hosts": {
+          "description": "Impostazioni host.\nLa chiave è libera.",
+          "type": "object",
+          "additionalProperties": {
+            "description": "Impostazioni hosting per uno specifico host",
+            "type": "object",
+            "properties": {
+              "Host": {
+                "description": "Host.\nSupporta prefisso \"*.\" come wildcard, oppure \"*\" per fare match con qualsiasi host.\nSe la porta non è standard (80 o 443) è necessario indicarla esplicitamente, oppure usare suffisso \":*\".\nÈ possibile combinare wildcard su host e su porte, ad esempio \"*.example.com:*\".\nI valori \"*\" e \"*:*\" sono equivalenti.",
+                "type": "string",
+                "default": "*"
+              },
+              "PathBase": {
+                "description": "\"Path base\" per proxy e load-balancer.",
+                "type": "string",
+                "default": "/"
+              }
+            }
+          }
+        }
+      }
     },
     "CertificateForwarding": {
       "description": "Configurazione Alad.Utility.ProxyLoadBalancer certificati client (mTLS) da proxy e load-balancer.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.Utility.ProxyLoadBalancer",
