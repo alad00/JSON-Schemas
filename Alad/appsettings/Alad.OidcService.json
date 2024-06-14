@@ -282,6 +282,16 @@
           "type": "object",
           "required": ["AuthenticationMethods", "ValidIssuers", "Scopes", "Applications"],
           "properties": {
+            "LoginDefaultReturnUrl": {
+              "description": "Indirizzo di destinazione predefinito in seguito a un login senza indirizzo di destinazione.\nAvailable since: v3.1.0",
+              "type": ["string", "null"],
+              "default": null
+            },
+            "LogoutDefaultReturnUrl": {
+              "description": "Indirizzo di destinazione predefinito in seguito a un logout senza indirizzo di destinazione.\nAvailable since: v3.1.0",
+              "type": ["string", "null"],
+              "default": null
+            },
             "AuthenticationMethods": {
               "description": "Configurazione dei metodi di autenticazione built-in supportati da questo servizio.",
               "type": "object",
