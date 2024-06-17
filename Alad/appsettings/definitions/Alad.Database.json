@@ -11,6 +11,10 @@
           "type": "string",
           "enum": ["SqlServer", "Oracle", "PostgreSql"]
         },
+        "CompatibilityLevel": {
+          "description": "Livello di compatibilità del protocollo utilizzato per comunicare con il database.\nhttps://learn.microsoft.com/sql/t-sql/statements/alter-database-transact-sql-compatibility-level\nhttps://docs.oracle.com/en/database/oracle/oracle-database/23/odpnt/EFCoreAPI.html#GUID-62B5F127-80BB-4047-8885-503627A50B5F\nPer Oracle indicare solo il valore numerico senza prefisso \"DatabaseVersion\".\nAvailable since: v2.2.0",
+          "type": [ "null", "number", "string" ]
+        },
         "ConnectionString": {
           "description": "Stringa di connessione al database.\nhttps://learn.microsoft.com/dotnet/api/system.data.sqlclient.sqlconnection.connectionstring\nhttps://docs.oracle.com/en/database/oracle/oracle-database/19/odpnt/ConnectionConnectionString.html\nhttps://www.npgsql.org/doc/connection-string-parameters.html\nAvailable since: v1.1.0",
           "type": "string"
