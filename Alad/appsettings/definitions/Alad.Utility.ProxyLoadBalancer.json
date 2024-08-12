@@ -22,6 +22,11 @@
           "type": "string",
           "default": "X-Forwarded-Proto"
         },
+        "ForwardedPrefixHeaderName": {
+          "description": "Usa questo header al posto di 'X-Forwarded-Prefix'.",
+          "type": "string",
+          "default": "X-Forwarded-Prefix"
+        },
         "OriginalForHeaderName": {
           "description": "Usa questo header al posto di 'X-Original-For'.",
           "type": "string",
@@ -36,6 +41,11 @@
           "description": "Usa questo header al posto di 'X-Original-Proto'.",
           "type": "string",
           "default": "X-Original-Proto"
+        },
+        "OriginalPrefixHeaderName": {
+          "description": "Usa questo header al posto di 'X-Original-Prefix'.",
+          "type": "string",
+          "default": "X-Original-Prefix"
         },
         "ForwardedHeaders": {
           "description": "Header gestiti da ASP.NET Core.",
@@ -59,7 +69,7 @@
         "KnownProxies": {
           "description": "Indirizzi dei proxy noti dai quali accettare header.",
           "type": "array",
-          "default": [],
+          "default": [ "::1" ],
           "items": {
             "oneOf": [{
               "type": "string",
@@ -73,7 +83,7 @@
         "KnownNetworks": {
           "description": "Intervalli di indirizzi dei proxy noti dai quali accettare header.",
           "type": "array",
-          "default": [],
+          "default": [ "127.0.0.1/8" ],
           "items": {
             "oneOf": [{
               "type": "string",
