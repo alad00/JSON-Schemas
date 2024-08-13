@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "definitions": {
+    "_dbContext": {
+      "type": "object",
+      "properties": {
+        "DbContext": {
+          "description": "Nome della classe di contesto Entity Framework.\nPuò essere il nome completo di namespace, oppure solo il nome della classe.\nNOTA: dalla versione 2.0.0 è consigliato usare un oggetto con chiave il nome del DbContext, piuttosto che un array, dalla versione 3.0.0 è diventato obbligatorio. Quando si utilizza il formato ad oggetto, omettere il campo 'DbContext'.\nAvailable since: Alad.Database v1.1.0\nDeprecated since: Alad.Database v2.0.0\nRemoved since: Alad.Database v3.0.0 / Alad.Database.EntityFrameworkCore v1.0.0",
+          "type": "string",
+          "deprecated": true
+        },
+        "DatabaseType": {
+          "description": "Tipo di database da utilizzare.\nAvailable since: Alad.Database v1.1.0 ('PostgreSql' since Alad.Database v1.7.0)",
+          "default": "SqlServer",
+          "type": "string",
+          "anyOf": [{
+            "enum": ["SqlServer", "Oracle", "PostgreSql"]
+          }, {}]
+        },
+        "CompatibilityLevel": {
+          "description": "Livello di compatibilità del protocollo utilizzato per comunicare con il database.\nhttps://learn.microsoft.com/sql/t-sql/statements/alter-database-transact-sql-compatibility-level\nhttps://docs.oracle.com/en/database/oracle/oracle-database/23/odpnt/EFCoreAPI.html#GUID-62B5F127-80BB-4047-8885-503627A50B5F\nPer Oracle indicare solo il valore numerico senza prefisso \"DatabaseVersion\".\nNOTA: rimosso dalla versione 3.0.0, usare 'ProviderOptions.CompatibilityLevel'.\nAvailable since: Alad.Database v2.2.0\nRemoved since: Alad.Database v3.0.0 / Alad.Database.EntityFrameworkCore v1.0.0",
+          "type": [ "null", "number", "string" ],
+          "deprecated": true
+        },
+        "ConnectionString": {
+          "description": "Stringa di connessione al database.\nhttps://learn.microsoft.com/dotnet/api/system.data.sqlclient.sqlconnection.connectionstring\nhttps://docs.oracle.com/en/database/oracle/oracle-database/19/odpnt/ConnectionConnectionString.html\nhttps://www.npgsql.org/doc/connection-string-parameters.html\nAvailable since: Alad.Database v1.1.0",
+          "type": "string"
+        },
+        "DefaultSchema": {
+          "description": "Schema utilizzato per le tabelle per le quali non è indicato.\nAvailable since: Alad.Database v1.6.0",
+          "type": [ "string", "null" ]
+        },
+        "ForceNamingConvention": {
+          "description": "Applica convenzioni sul nome di schema, tabelle e colonne.\nSe non indicato (valore 'null'), usa \"PascalCase\" per Microsoft SQL Server, \"UPPERCASE\" per Oracle DB, e \"lower_snake_case\" per Postgres.\nNOTA: deprecato dalla versione 3.0.0, usare 'NamingConvention'.\nAvailable since: Alad.Database v2.1.0\nDeprecated since: Alad.Database v3.0.0\nRemoved since: Alad.Database.EntityFrameworkCore v1.0.0",
+          "type": ["null", "string"],
+          "default": null,
+          "enum": [null, "PascalCase", "UPPERCASE", "lower_snake_case"]
+        },
+        "Schemas": {
+          "description": "Schema per ciascuna tabella.\nLa chiave è il nome del tipo in C# (opzionalmente comprensivo di namespace).\nNOTA: deprecato dalla versione 2.0.0, usare 'Tables[name].Schema'.\nAvailable since: Alad.Database v1.6.0\nDeprecated since: Alad.Database v2.0.0\nRemoved since: Alad.Database.EntityFrameworkCore v1.0.0",
+          "type": "object",
+          "deprecated": true,
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "Tables": {
+          "description": "Configurazione specifica per tabella.\nAvailable since: Alad.Database v2.0.0",
+          "type": "object",
+          "additionalProperties": {
+            "description": "Nome del tipo in C# (opzionalmente comprensivo di namespace).",
+            "type": "object",
+            "properties": {
+              "Schema": {
+                "description": "Schema di questa tabella.",
+                "type": [ "string", "null" ]
+              },
+              "Name": {
+                "description": "Nome di questa tabella.",
+                "type": [ "string", "null" ]
+              },
+              "Columns": {
+                "description": "Configurazione specifica per colonna.\nAvailable since: Alad.Database v2.1.0",
+                "type": "object",
+                "properties": {
+                  "Name": {
+                    "description": "Nome di questa colonna.",
+                    "type": [ "string", "null" ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "PoolSize": {
+          "description": "Numero massimo di istanze di 'DbContext' nella pool, oppure 'null' per non configurare il pooling.\nQuesta opzione non serve per configurare il connection pooling.\nAvailable since: Alad.Database v1.1.0",
+          "type": ["integer", "null"],
+          "default": null
+        },
+        "ApplyMigrations": {
+          "description": "Applica migrations quando la relativa funzione è chiamata via codice.\nAttenzione: le migrations non supportano schema custom, quindi non è consentito applicare migrations se 'DefaultSchema' o 'Schemas' sono valorizzati.\nAvailable since: Alad.Database v1.6.2",
+          "type": "boolean",
+          "default": false
+        },
+        "EnableSensitiveDataLogging": {
+          "description": "Enables application data to be included in exception messages, logging, etc. This can include the values assigned to properties of your entity instances, parameter values for commands being sent to the database, and other such data. You should only enable this flag if you have the appropriate security measures in place based on the sensitivity of this data.\nAvailable since: Alad.Database v1.9.0",
+          "type": "boolean",
+          "default": false
+        },
+        "ProviderOptions": {
+          "description": "Impostazioni supplementari specifiche per il provider del database.\nAvailable since: Alad.Database v3.0.0 / Alad.Database.EntityFrameworkCore v1.0.0",
+          "type": [ "object", "null" ]
+        }
+      },
+      "anyOf": [{
+        "properties": {
+          "DatabaseType": {
+            "const": "SqlServer"
+          },
+          "ProviderOptions": {
+            "properties": {
+              "CompatibilityLevel": {
+                "description": "Livello di compatibilità del protocollo utilizzato per comunicare con il database.\nhttps://learn.microsoft.com/sql/t-sql/statements/alter-database-transact-sql-compatibility-level\nAvailable since: Alad.Database v3.0.0 / Alad.Database.EntityFrameworkCore v1.0.0",
+                "type": [ "null", "number" ]
+              }
+            }
+          }
+        }
+      }, {
+        "properties": {
+          "DatabaseType": {
+            "const": "Oracle"
+          },
+          "ProviderOptions": {
+            "properties": {
+              "CompatibilityLevel": {
+                "description": "Livello di compatibilità del protocollo utilizzato per comunicare con il database.\nhttps://docs.oracle.com/en/database/oracle/oracle-database/23/odpnt/EFCoreAPI.html#GUID-62B5F127-80BB-4047-8885-503627A50B5F\nIndicare solo il valore numerico senza prefisso \"DatabaseVersion\".\nAvailable since: Alad.Database v3.0.0 / Alad.Database.EntityFrameworkCore v1.0.0",
+                "type": [ "null", "number", "string" ]
+              }
+            }
+          }
+        }
+      }, {
+      }]
+    }
+  },
+  "properties": {
+    "Database": {
+      "oneOf": [{
+        "description": "Configurazione Alad.Database.\nhttps://github.com/alad00/Alad.Utility/blob/master/src/Alad.Database/",
+        "type": "object",
+        "additionalProperties": {
+          "allOf": [{
+            "description": "Nome della classe di contesto Entity Framework.\nPuò essere il nome completo di namespace, oppure solo il nome della classe, oppure 'Default'.\nAvailable since: Alad.Database v2.0.0 (array nelle versioni precedenti)"
+          }],
+          "$ref": "#/definitions/_dbContext"
+        }
+      },{
+        "description": "Configurazione Alad.Database.\nhttps://github.com/alad00/Alad.Utility/blob/master/src/Alad.Database/\nNOTA: dalla versione 2.0.0 è consigliato usare un oggetto con chiave il nome del DbContext, piuttosto che un array, dalla versione 3.0.0 è diventato obbligatorio.\nRemoved since: Alad.Database v3.0.0 / Alad.Database.EntityFrameworkCore v1.0.0",
+        "type": "array",
+        "deprecated": true,
+        "items": {
+          "$ref": "#/definitions/_dbContext"
+        }
+      }]
+    }
+  }
+}

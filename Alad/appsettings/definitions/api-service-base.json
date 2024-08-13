@@ -5,7 +5,7 @@
     { "$ref": "https://json.schemastore.org/appsettings.json" },
     { "$ref": "./Alad.Auth.json" },
     { "$ref": "./Alad.Certificates.json" },
-    { "$ref": "./Alad.Database.json" },
+    { "$ref": "./Alad.Database.EntityFrameworkCore.json" },
     { "$ref": "./Alad.EventStreams.json" },
     { "$ref": "./Alad.Logging.json" },
     { "$ref": "./Alad.Servlets.json" },
