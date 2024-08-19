@@ -44,8 +44,19 @@
           "type": "string"
         },
         "ClientSecret": {
-          "definition": "Per le applicazioni server (servizi) è trattato come una password, per le applicazioni client (frontend) deve essere 'null'.",
+          "description": "Per le applicazioni server (servizi) è trattato come una password, per le applicazioni client (frontend) deve essere 'null'.",
           "type": ["string", "null"]
+        },
+        "ApplicationType": {
+          "description": "Tipo di applicazione.\n\"native\" accetta qualunque porta per i 'RedirectUris' verso localhost o 127.0.0.1.\n\nAvailable since: v3.2.0",
+          "type": "string",
+          "enum": ["native", "web"],
+          "default": "web"
+        },
+        "ClientType": {
+          "description": "Tipo di client.\nDefault: \"public\" se non è presente un secret; \"confidential\" se è presente un secret.\n\nAvailable since: v3.2.0",
+          "type": ["string", "null"],
+          "enum": ["public", "confidential", null]
         },
         "Scopes": {
           "description": "Lista di scopes ai quali questa applicazione è autorizzata ad accedere.\nQuesto servizio, o gli utenti di questo frontend potranno fare chiamate REST alle applicazioni che fanno parte di uno di questi scopes.",
@@ -63,6 +74,30 @@
           "items": {
             "type": "string",
             "format": "uri"
+          }
+        }
+      }
+    },
+    "roles": {
+      "description": "Impostazioni roles.\n\nAvailable since: v3.2.0",
+      "type": "object",
+      "properties": {
+        "Assign": {
+          "description": "Ruoli assegnati agli utenti che si autenticato con questo metodo di autenticazione.",
+          "type": "array",
+          "items": { "$ref": "#/definitions/role-id" }
+        },
+        "Map": {
+          "description": "Mappatura da roles del provider di terze parti a ruoli utilizzati internamente.",
+          "type": "object",
+          "propertyNames": {
+            "description": "Role del provider di terze parti.",
+            "type": "string"
+          },
+          "additionalProperties": {
+            "description": "Ruoli ASP.NET Core.",
+            "type": "array",
+            "items": { "$ref": "#/definitions/role-id" }
           }
         }
       }
@@ -123,13 +158,16 @@
           "description": "\"Application (client) ID\" di Azure Active Directory.",
           "type": "string"
         },
+        "Roles": { "$ref": "#/definitions/roles" },
         "AssignRoles": {
-          "description": "Ruoli assegnati agli utenti che si autenticato con questo metodo di autenticazione",
+          "description": "Ruoli assegnati agli utenti che si autenticato con questo metodo di autenticazione.\nDalla versione 3.2.0 questa opzione è stata rimpiazzata da \"Roles.Assign\".\n\nDeprecated since: v3.2.0",
+          "deprecated": true,
           "type": "array",
           "items": { "$ref": "#/definitions/role-id" }
         },
         "MapRoles": {
-          "description": "Mappatura da \"app roles\" Azure AD a ruoli ASP.NET Core.",
+          "description": "Mappatura da \"app roles\" Azure AD a ruoli ASP.NET Core.\nDalla versione 3.2.0 questa opzione è stata rimpiazzata da \"Roles.Map\".\n\nDeprecated since: v3.2.0",
+          "deprecated": true,
           "type": "object",
           "propertyNames": {
             "description": "\"App role\" Azure AD.",
@@ -169,6 +207,7 @@
           "$comment": "TODO",
           "type": "string"
         },
+        "Roles": { "$ref": "#/definitions/roles" },
         "AdditionalEndpointBaseAddresses": {
           "$comment": "TODO",
           "type": "array",
