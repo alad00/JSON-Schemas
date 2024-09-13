@@ -26,6 +26,7 @@
               "description": "Base URL di destinazione.\nAvailable since: CodeGen v1.0.0",
               "type": "string",
               "format": "uri",
+              "pattern": "(\nNon includere 'webapi' in questo percorso.\n\n){0}^(?!.*/webapi/?).*$",
               "default": "http://example.com/api"
             },
             "Certificates": {
