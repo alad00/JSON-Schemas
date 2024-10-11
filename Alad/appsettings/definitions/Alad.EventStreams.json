@@ -15,7 +15,7 @@
       "anyOf": [{
         "required": ["ConsumerClient"]
       }, {
-        "required": ["ProducerClient", "ProducerService"]
+        "required": ["ProducerClient"]
       }],
       "properties": {
         "AdminClient": {
