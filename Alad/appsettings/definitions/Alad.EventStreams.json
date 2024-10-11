@@ -11,7 +11,7 @@
     "Kafka": {
       "description": "Configurazione Kafka.\nhttps://github.com/alad00/Alad.Utility/tree/master/src/Alad.EventStreams",
       "type": "object",
-      "required": ["AdminClient", "Topics"],
+      "required": ["Topics"],
       "anyOf": [{
         "required": ["ConsumerClient"]
       }, {
@@ -62,6 +62,24 @@
               "description": "The maximum amount of time in milliseconds that the transaction coordinator will wait for a transaction status update from the producer before proactively aborting the ongoing transaction. If this value is larger than the `transaction.max.timeout.ms` setting in the broker, the init_transactions() call will fail with ERR_INVALID_TRANSACTION_TIMEOUT. The transaction timeout automatically adjusts `message.timeout.ms` and `socket.timeout.ms`, unless explicitly configured in which case they must not exceed the transaction timeout (`socket.timeout.ms` must be at least 100ms lower than `transaction.timeout.ms`). This is also the default timeout value if no timeout (-1) is supplied to the transactional API methods.\nAvailable since: v2.0.1",
               "type": "integer",
               "default": 10000
+            },
+            "SecurityProtocol": {
+              "description": "Protocol used to communicate with brokers.\nAvailable since: v5.2.0",
+              "type": "string",
+              "enum": [null, "SaslSsl", "Ssl", "Plaintext"]
+            },
+            "SaslMechanism": {
+              "description": "SASL mechanism to use for authentication.\nAvailable since: v5.2.0",
+              "type": "string",
+              "enum": [null, "Plain", "ScramSha256", "ScramSha512"]
+            },
+            "SaslUsername": {
+              "description": "SASL username for use with the PLAIN and SASL-SCRAM-.. mechanisms\nAvailable since: v5.2.0",
+              "type": "string"
+            },
+            "SaslPassword": {
+              "description": "SASL password for use with the PLAIN and SASL-SCRAM-.. mechanism.\nAvailable since: v5.2.0",
+              "type": "string"
             }
           }
         },
