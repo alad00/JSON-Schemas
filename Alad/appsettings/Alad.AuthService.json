@@ -1,0 +1,290 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "definitions": {
+    "scope-id": {
+      "$ref": "../definitions/oidc.json#/definitions/scope-token"
+    },
+    "application-id": {
+      "description": "Identificativo applicazione, preferibilmente alfanumerico lowercase con trattini come separatori.",
+      "type": "string"
+    },
+    "role-id": {
+      "description": "Identificativo ruolo ASP.NET Core.",
+      "type": "string"
+    },
+    "scope": {
+      "description": "Scope OIDC.",
+      "type": "object",
+      "required": ["Applications"],
+      "properties": {
+        "Resources": {
+          "description": "Removed since: v4.0.0",
+          "deprecated": true
+        },
+        "Applications": {
+          "description": "Applicazioni che fanno parte di questo scope.\nSe il token include questo scope l'applicazione avrà accesso al contenuto del token, ovvero potrà leggere le autorizzazioni contenute nel token.\nPer utilizzatori libreria Alad.Auth: vedere 'Authorization.RequireScopes' nel file di configurazione del servizio REST.",
+          "type": "array",
+          "items": { "$ref": "#/definitions/application-id" }
+        }
+      }
+    },
+    "application": {
+      "description": "Applicazione (un servizio web con API REST, oppure un frontend web, oppure un client tipo Swagger o Postman).",
+      "type": "object",
+      "required": ["ClientId"],
+      "properties": {
+        "ClientId": {
+          "description": "Identificativo utilizzato dal servizio OIDC per identificare le richieste provenienti dall'applicazione. Per le applicazioni server (servizi) è trattato come uno username.",
+          "type": "string"
+        },
+        "ClientSecret": {
+          "description": "Per le applicazioni server (servizi) è trattato come una password, per le applicazioni client (frontend) deve essere 'null'.",
+          "type": ["string", "null"]
+        },
+        "ReportErrors": {
+          "description": "Segnala all'applicazione errori di configurazione o di autenticazione.\nIl default è true; impostare a false per intercettare gli errori piuttosto che propagarli all'applicazione.\n\nAvailable since: v4.0.0",
+          "type": "boolean",
+          "default": true
+        },
+        "ApplicationType": {
+          "description": "Removed since: 4.0.0",
+          "deprecated": true
+        },
+        "ClientType": {
+          "description": "Removed since: 4.0.0",
+          "deprecated": true
+        },
+        "Scopes": {
+          "description": "Lista di scopes ai quali questa applicazione è autorizzata ad accedere.\nQuesto servizio, o gli utenti di questo frontend potranno fare chiamate REST alle applicazioni che fanno parte di uno di questi scopes.",
+          "type": "array",
+          "items": { "$ref": "#/definitions/scope-id" }
+        },
+        "Roles": {
+          "description": "Lista di ruoli ASP.NET Core dell'utenza tecnica di questa applicazione.\nQuesto servizio potrà fare chiamate REST agli endpoint che richiedono questi ruoli ASP.NET Core.\nPer questioni di sicurezza, questi ruoli sono validi solo per l'utenza tecnica di questa applicazione, non vengono ereditati dagli utenti che si autenticano tramite il frontend di questa applicazione.\n\nAvailable since: v1.3.0",
+          "type": "array",
+          "items": { "$ref": "#/definitions/role-id" }
+        },
+        "RedirectUris": {
+          "description": "Indirizzi di ritorno previsti dal protocollo OIDC.\nPer identificare questi indirizzi, fare riferimento alla documentazione del client (Swagger/Postman), oppure della libreria di autenticazione utilizzata nel servizio o frontend.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "roles": {
+      "description": "Impostazioni roles.\n\nAvailable since: v3.2.0",
+      "type": "object",
+      "properties": {
+        "Assign": {
+          "description": "Ruoli assegnati agli utenti che si autenticato con questo metodo di autenticazione.",
+          "type": "array",
+          "items": { "$ref": "#/definitions/role-id" }
+        },
+        "Map": {
+          "description": "Mappatura da roles del provider di terze parti a ruoli utilizzati internamente.",
+          "type": "object",
+          "propertyNames": {
+            "description": "Role del provider di terze parti.",
+            "type": "string"
+          },
+          "additionalProperties": {
+            "description": "Ruoli ASP.NET Core.",
+            "type": "array",
+            "items": { "$ref": "#/definitions/role-id" }
+          }
+        }
+      }
+    },
+    "auth-hardcoded": {
+      "description": "Configurazione autenticazione tramite credenziali statiche hardcoded.",
+      "type": "object",
+      "required": ["Users"],
+      "properties": {
+        "Name": {
+          "description": "Nome mostrato all'utente nella pagina di selezione del metodo di autenticazione.",
+          "type": "string",
+          "default": "Login"
+        },
+        "Users": {
+          "type": "array",
+          "items": {
+            "description": "Credenziali hardcoded.",
+            "type": "object",
+            "required": ["Username", "Password"],
+            "properties": {
+              "Username": {
+                "description": "Username di questo utente, case-sensitive.",
+                "type": "string"
+              },
+              "Password": {
+                "description": "Password di questo utente, case-sensitive.",
+                "type": "string"
+              },
+              "Roles": {
+                "description": "Ruoli assegnati a questo utente.",
+                "type": "array",
+                "items": { "$ref": "#/definitions/role-id" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "auth-entraid": {
+      "description": "Autenticazione tramite Azure Active Directory.",
+      "type": "object",
+      "required": ["TenantId", "ClientId"],
+      "properties": {
+        "Id": {
+          "description": "Removed since: v4.0.0",
+          "deprecated": true
+        },
+        "Name": {
+          "description": "Nome mostrato all'utente nella pagina di selezione del metodo di autenticazione.",
+          "type": "string"
+        },
+        "TenantId": {
+          "description": "\"Directory (tenant) ID\" di Azure Active Directory.",
+          "type": "string"
+        },
+        "ClientId": {
+          "description": "\"Application (client) ID\" di Azure Active Directory.",
+          "type": "string"
+        },
+        "Roles": { "$ref": "#/definitions/roles" },
+        "AssignRoles": {
+          "description": "Rinominato in 'Roles.Assign'.\n\nRemoved since: v4.0.0",
+          "deprecated": true
+        },
+        "MapRoles": {
+          "description": "Rinominato in 'Roles.Map'.\n\nRemoved since: v4.0.0",
+          "deprecated": true
+        }
+      }
+    },
+    "auth-oidc": {
+      "description": "Autenticazione tramite un altro servizio che implementa il protocollo OIDC.",
+      "type": "object",
+      "required": ["IdentityEndpoint", "ClientId"],
+      "properties": {
+        "Id": {
+          "description": "Removed since: v4.0.0",
+          "deprecated": true
+        },
+        "Name": {
+          "description": "Nome mostrato all'utente nella pagina di selezione del metodo di autenticazione.",
+          "type": "string"
+        },
+        "IdentityEndpoint": {
+          "description": "Identity server OpenID Connect.",
+          "type": "string",
+          "format": "uri-relative"
+        },
+        "ClientId": {
+          "description": "\"Client ID\" di OpenID Connect.",
+          "type": "string"
+        },
+        "ClientSecret": {
+          "description": "\"Client Secret\" di OpenID Connect, opzionale.",
+          "type": "string"
+        },
+        "RolesClaim": {
+          "description": "Tipo di claim contenente i roles.",
+          "type": "string",
+          "default": "roles"
+        },
+        "Roles": { "$ref": "#/definitions/roles" },
+        "AdditionalEndpointBaseAddresses": {
+          "description": "Endpoint supplementari OpenID Connect.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri-relative"
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    { "$ref": "./definitions/api-service-base.json" },
+    {
+      "properties": {
+        "AuthorizationService": {
+          "description": "Configurazione Alad.AuthService.\nhttps://github.com/alad00/Alad.AuthService",
+          "type": "object",
+          "required": ["AuthenticationSources", "ValidIssuers", "Scopes", "Applications"],
+          "properties": {
+            "LoginDefaultReturnUrl": {
+              "description": "Indirizzo di destinazione predefinito in seguito a un login senza indirizzo di destinazione.\nAvailable since: v3.1.0",
+              "type": ["string", "null"],
+              "default": null
+            },
+            "LogoutDefaultReturnUrl": {
+              "description": "Indirizzo di destinazione predefinito in seguito a un logout senza indirizzo di destinazione.\nAvailable since: v3.1.0",
+              "type": ["string", "null"],
+              "default": null
+            },
+            "AuthenticationMethods": {
+              "description": "Rinominato in 'AuthenticationSources'.\n\nRemoved since: v4.0.0",
+              "deprecated": true
+            },
+            "AuthenticationSources": {
+              "description": "Configurazione delle sorgenti di autenticazione built-in supportati da questo servizio.",
+              "type": "object",
+              "properties": {
+                "Hardcoded": { "$ref": "#/definitions/auth-hardcoded" },
+                "AzureAD": {
+                  "description": "Rinominato in 'EntraID'.\n\nRemoved since: v4.0.0",
+                  "deprecated": true
+                },
+                "EntraID": {
+                  "description": "Configurazione autenticazione tramite Microsoft Entra ID (ex Azure AD).",
+                  "type": "object",
+                  "additionalProperties": { "$ref": "#/definitions/auth-entraid" }
+                },
+                "Oidc": {
+                  "description": "Rinominato in 'OIDC'.\n\nRemoved since: v4.0.0",
+                  "deprecated": true
+                },
+                "OIDC": {
+                  "description": "Configurazione autenticazione tramite sorgente esterna di autenticazione OpenID Connect.",
+                  "type": "object",
+                  "additionalProperties": { "$ref": "#/definitions/auth-oidc" }
+                }
+              }
+            },
+            "ValidIssuers": {
+              "description": "Indirizzi dai quali il server OIDC è accessibile.\nSe il server OIDC è accessibile su più indirizzi, qua devono essere indicati tutti gli indirizzi validi.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "(\nDeve avere un path (aggiungere '/').\n\n){0}^[^:]+:/*[^/]+/"
+              }
+            },
+            "Scopes": {
+              "description": "Scopes gestiti in questo servizio.\nAvailable since: v2.1.3 (array nelle versioni precedenti)",
+              "type": "object",
+              "propertyNames": { "$ref": "#/definitions/scope-id" },
+              "additionalProperties": { "$ref": "#/definitions/scope" }
+            },
+            "Applications": {
+              "description": "Applicazioni autorizzate ad utilizzare questo servizio, e relative credenziali.\nAvailable since: v2.1.3 (array nelle versioni precedenti)",
+              "type": "object",
+              "propertyNames": { "$ref": "#/definitions/application-id" },
+              "additionalProperties": { "$ref": "#/definitions/application" }
+            },
+            "Certificates": {
+              "description": "Removed since: v4.0.0",
+              "deprecated": true
+            }
+          }
+        }
+      }
+    }
+  ]
+}
