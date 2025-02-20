@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "Debugging": {
+      "description": "Configurazione Alad.Utility.Debugging.AspNetCore.\nhttps://github.com/alad00/Alad.Utility/tree/main/src/Alad.Utility.Debugging.AspNetCore",
+      "type": "object",
+      "default": { "Enabled": null },
+      "properties": {
+        "Enabled": {
+          "description": "Abilità la pagina di debug.\nLa pagina di debug è accessibile a http://localhost:8080/debug/ (sulla porta configurata).\nSe non indicato esplicitamente, le funzionalità di debug sono attive in ambiente di sviluppo, inattive negli altri.",
+          "type": "boolean",
+          "default": false
+        },
+        "Configuration": {
+          "description": "Permette di visualizzare la configurazione.",
+          "type": "object",
+          "properties": {
+            "Enabled": {
+              "description": "Permette di visualizzare la configurazione.\nSe non indicato esplicitamente, coincide con 'Debugging:Enabled'.",
+              "type": ["boolean", "null"],
+              "default": null
+            },
+            "ShowSensitive": {
+              "description": "Permette di visualizzare anche password e dati sensibili.\nAttenzione: l'algoritmo per determinare se un dato è sensibile è euristico, impostare questa opzione a false non garantisce che password o dati sensibili non possano trapelare.",
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "Logs": {
+          "description": "Permette di visualizzare i log in tempo reale.",
+          "type": "object",
+          "properties": {
+            "Enabled": {
+              "description": "Espone i log in tempo reale tramite interfaccia web.\nPer il corretto funzionamento di questa pagina è necessario che i web-socket siano attivi. I log fanno riferimento a una singola istanza casuale del microservizio.\nSe non indicato esplicitamente, coincide con 'Debugging:Enabled'.",
+              "type": ["boolean", "null"],
+              "default": null
+            }
+          }
+        },
+        "Memory": {
+          "description": "Permette di visualizzare l'utilizzo di memoria in tempo reale.",
+          "type": "object",
+          "properties": {
+            "Enabled": {
+              "description": "Espone le statistiche di utilizzo di memoria in tempo reale, e permette di forzare la garbage-collection.\nSe non indicato esplicitamente, coincide con 'Debugging:Enabled'.",
+              "type": ["boolean", "null"],
+              "default": null
+            }
+          }
+        },
+        "Trace": {
+          "description": "Permette di vedere la struttura di una richiesta in arrivo, per agevolare il debug di reverse-proxy.",
+          "type": "object",
+          "properties": {
+            "Enabled": {
+              "description": "Permette di vedere la struttura di una richiesta in arrivo, per agevolare il debug di reverse-proxy.\nSe non indicato esplicitamente, coincide con 'Debugging:Enabled'.",
+              "type": ["boolean", "null"],
+              "default": null
+            }
+          }
+        },
+        "Version": {
+          "description": "Permette di visualizzare la versione delle librerie installate.",
+          "type": "object",
+          "properties": {
+            "Enabled": {
+              "description": "Permette di visualizzare la versione delle librerie installate.\nSe non indicato esplicitamente, coincide con 'Debugging:Enabled'.",
+              "type": ["boolean", "null"],
+              "default": null
+            }
+          }
+        },
+        "Authentication": {
+          "description": "Permette di visualizzare il contenuto dei token di autenticazione.",
+          "type": "object",
+          "properties": {
+            "Enabled": {
+              "description": "Permette di visualizzare il contenuto dei token di autenticazione.\nSe non indicato esplicitamente, coincide con 'Debugging:Enabled'.",
+              "type": ["boolean", "null"],
+              "default": null
+            }
+          }
+        }
+      }
+    }
+  }
+}

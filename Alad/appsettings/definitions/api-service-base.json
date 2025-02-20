@@ -9,6 +9,7 @@
     { "$ref": "./Alad.EventStreams.json" },
     { "$ref": "./Alad.Logging.json" },
     { "$ref": "./Alad.Servlets.json" },
+    { "$ref": "./Alad.Utility.Debugging.AspNetCore.json" },
     { "$ref": "./Alad.Utility.HealthChecks.json" },
     { "$ref": "./Alad.Utility.ProxyLoadBalancer.json" },
     { "$ref": "./Alad.Utility.Security.json" },
