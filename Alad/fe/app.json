@@ -9,7 +9,8 @@
         "base",
         "matcha",
         "pastel",
-        "spectrum"
+        "spectrum",
+        "contrasto"
       ]
     }
   },
