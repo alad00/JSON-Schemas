@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "allOf": [
+    { "$ref": "./definitions/api-service-base.json" },
+    {
+      "properties": {
+        "GestoreFile": {
+          "description": "Configurazione Alad.GestoreFile.\nhttps://github.com/alad00/Alad.GestoreFile",
+          "type": "object",
+          "properties": {
+            "TimestampFormat": {
+              "description": "Formato del timestamp usato nei nomi dei file.",
+              "type": "string",
+              "default": "yyyyMMdd_HHmmssffffff"
+            },
+            "Export": {
+              "description": "Impostazioni di export.\nAvailable since: v4.1.0",
+              "type": "object",
+              "properties": {
+                "ProviderName": {
+                  "description": "Nome del provider di remote storage utilizzato per salvare i file esportati.",
+                  "type": "string",
+                  "default": "Export"
+                },
+                "SubProviderName": {
+                  "description": "Nome del sotto-provider di remote storage utilizzato per salvare i file esportati.",
+                  "type": ["string", "null"]
+                },
+                "GraphQLEndpoints": {
+                  "description": "Associa \"app name\" all'endpoint GraphQL corrispondente.",
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "CsvFormat": {
+                  "description": "Formato esportazione CSV.\nAvailable since: v6.2.0",
+                  "type": "object",
+                  "properties": {
+                    "Encoding": {
+                      "description": "Codifica.\nValori comuni: \"UTF-8\", \"ISO-8859-1\".",
+                      "type": "string",
+                      "default": "UTF-8"
+                    },
+                    "Delimiter": {
+                      "description": "Separatore.",
+                      "type": "string",
+                      "default": ","
+                    },
+                    "NewLine": {
+                      "description": "Ritorni a capo.",
+                      "type": "string",
+                      "default": "\r\n"
+                    },
+                    "SkipHeader": {
+                      "description": "Salta intestazione.",
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "QuoteBehavior": {
+                      "description": "Quando mettere caratteri di \"quote\".\n\"auto\" - Quando necessario;\n\"text\" - Per i valori testuali;\n\"always\" - Sempre.",
+                      "type": "string",
+                      "enum": ["auto", "text", "always"]
+                    },
+                    "Locale": {
+                      "description": "Codice linguistico ISO 3166-1 o ISO 639, oppure null per non localizzare.\nNota: intestazioni e combo verranno sempre localizzate come indicato nella richiesta e non in base a questa locale.\nEsempio: \"en-GB\", \"en-US\", \"it-IT\", \"en\", null.",
+                      "type": ["string", "null"],
+                      "default": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
