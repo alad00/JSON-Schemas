@@ -176,9 +176,15 @@
           "description": "Configurazione embedding in <frame>, <iframe>, <embed> o <object>.\nhttps://developer.mozilla.org/docs/Web/HTTP/Headers/X-Frame-Options\nAvailable since: v1.2.0",
           "type": [ "object", "null" ],
           "default": {
+            "Enabled": true,
             "Directives": "DENY"
           },
           "properties": {
+            "Enabled": {
+              "description": "Abilita middleware embedding.\nAvailable since: v1.2.1",
+              "type": "boolean",
+              "default": false
+            },
             "Directives": {
               "allOf": [{
                 "description": "Direttive embedding.",
@@ -195,9 +201,15 @@
           "description": "Configurazione referrer.\nhttps://developer.mozilla.org/docs/Web/HTTP/Headers/Referrer-Policy\nAvailable since: v1.2.0",
           "type": [ "object", "null" ],
           "default": {
+            "Enabled": true,
             "Policy": "no-referrer"
           },
           "properties": {
+            "Enabled": {
+              "description": "Abilita middleware referrer.\nAvailable since: v1.2.1",
+              "type": "boolean",
+              "default": false
+            },
             "Policy": {
               "allOf": [{
                 "description": "Policy referrer.",
