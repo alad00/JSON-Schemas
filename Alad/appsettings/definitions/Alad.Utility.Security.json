@@ -171,6 +171,44 @@
               "default": false
             }
           }
+        },
+        "Embedding": {
+          "description": "Configurazione embedding in <frame>, <iframe>, <embed> o <object>.\nhttps://developer.mozilla.org/docs/Web/HTTP/Headers/X-Frame-Options\nAvailable since: v1.2.0",
+          "type": [ "object", "null" ],
+          "default": {
+            "Directives": "DENY"
+          },
+          "properties": {
+            "Directives": {
+              "allOf": [{
+                "description": "Direttive embedding.",
+                "type": [ "string", "null" ]
+              }, {
+                "anyOf": [{
+                  "enum": [ "DENY", "SAMEORIGIN" ]
+                }, {}]
+              }]
+            }
+          }
+        },
+        "Referrer": {
+          "description": "Configurazione referrer.\nhttps://developer.mozilla.org/docs/Web/HTTP/Headers/Referrer-Policy\nAvailable since: v1.2.0",
+          "type": [ "object", "null" ],
+          "default": {
+            "Policy": "no-referrer"
+          },
+          "properties": {
+            "Policy": {
+              "allOf": [{
+                "description": "Policy referrer.",
+                "type": [ "string", "null" ]
+              }, {
+                "anyOf": [{
+                  "enum": [ "no-referrer", "no-referrer-when-downgrade", "origin", "origin-when-cross-origin", "same-origin", "strict-origin", "strict-origin-when-cross-origin", "unsafe-url" ]
+                }, {}]
+              }]
+            }
+          }
         }
       }
     }
