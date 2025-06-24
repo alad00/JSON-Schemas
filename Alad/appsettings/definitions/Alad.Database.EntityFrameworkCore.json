@@ -35,7 +35,14 @@
           "description": "Applica convenzioni sul nome di schema, tabelle e colonne.\nSe non indicato (valore 'null'), usa \"PascalCase\" per Microsoft SQL Server, \"UPPERCASE\" per Oracle DB, e \"lower_snake_case\" per Postgres.\nNOTA: deprecato dalla versione 3.0.0, usare 'NamingConvention'.\nAvailable since: Alad.Database v2.1.0\nDeprecated since: Alad.Database v3.0.0\nRemoved since: Alad.Database.EntityFrameworkCore v1.0.0",
           "type": ["null", "string"],
           "default": null,
-          "enum": [null, "PascalCase", "UPPERCASE", "lower_snake_case"]
+          "enum": [null, "PascalCase", "UPPERCASE", "lower_snake_case"],
+          "deprecated": true
+        },
+        "NamingConvention": {
+          "description": "Applica convenzioni sul nome di schema, tabelle e colonne.\nSe non indicato (valore 'null'), usa \"PascalCase\" per Microsoft SQL Server, \"UPPERCASE\" per Oracle DB, e \"snake_case\" per Postgres.\nAvailable since: Alad.Database.EntityFrameworkCore v1.2.0",
+          "type": ["null", "string"],
+          "default": null,
+          "enum": [null, "flatcase", "UPPERCASE", "camelCase", "PascalCase", "snake_case", "ALL_CAPS"]
         },
         "Schemas": {
           "description": "Schema per ciascuna tabella.\nLa chiave è il nome del tipo in C# (opzionalmente comprensivo di namespace).\nNOTA: deprecato dalla versione 2.0.0, usare 'Tables[name].Schema'.\nAvailable since: Alad.Database v1.6.0\nDeprecated since: Alad.Database v2.0.0\nRemoved since: Alad.Database.EntityFrameworkCore v1.0.0",
