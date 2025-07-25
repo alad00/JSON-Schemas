@@ -270,6 +270,30 @@
                 "pattern": "(\nDeve avere un path (aggiungere '/').\n\n){0}^[^:]+:/*[^/]+/"
               }
             },
+            "Tokens": {
+              "description": "Impostazioni relative ai token gestiti da questo servizio.\nAvailable since: v4.3.0",
+              "type": "object",
+              "properties": {
+                "AccessTokenDuration": {
+                  "description": "Durata OAuth 2.0 access token.",
+                  "type": "string",
+                  "default": "01:00:00",
+                  "allOf": [{ "$ref": "../definitions/System.json#/definitions/TimeSpan" }]
+                },
+                "IdentityTokenDuration": {
+                  "description": "Durata ID Token.",
+                  "type": "string",
+                  "default": "02:00:00",
+                  "allOf": [{ "$ref": "../definitions/System.json#/definitions/TimeSpan" }]
+                },
+                "RefreshTokenDuration": {
+                  "description": "Durata OAuth 2.0 refresh token.",
+                  "type": "string",
+                  "default": "30.00:00:00",
+                  "allOf": [{ "$ref": "../definitions/System.json#/definitions/TimeSpan" }]
+                }
+              }
+            },
             "Scopes": {
               "description": "Scopes gestiti in questo servizio.\nAvailable since: v2.1.3 (array nelle versioni precedenti)",
               "type": "object",
