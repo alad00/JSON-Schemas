@@ -66,6 +66,37 @@
           "description": "Scopes OIDC necessari per fare richieste a questo servizio REST.\nAvailable since: v1.6.0",
           "type": "array",
           "items": { "$ref": "#/definitions/scope-id" }
+        },
+        "Roles": {
+          "description": "Attivazione autorizzazione acceso sulla base dei roles.\nAvailable since: v1.8.0",
+          "type": "object",
+          "default": {
+            "Enabled": true,
+            "Controllers": {}
+          },
+          "properties": {
+            "Enabled": {
+              "description": "Abilita l'autorizzazione basata sui ruoli.",
+              "type": "boolean",
+              "default": true
+            },
+            "Controllers": {
+              "description": "Mappa dei controller e dei ruoli autorizzati per ciascuno.",
+              "type": "object",
+              "additionalProperties": {
+                "description": "Mappa delle azioni del controller e dei ruoli autorizzati per ciascuna.",
+                "type": "object",
+                "additionalProperties": {
+                  "description": "Ruolo autorizzato per l'azione del controller. Usa ['*'] per consentire a tutti i ruoli.",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": ["*"]
+                }
+              }
+            }
+          }
         }
       }
     }
