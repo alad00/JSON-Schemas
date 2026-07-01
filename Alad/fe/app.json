@@ -5,13 +5,14 @@
     "_AladThemeType": {
       "enum": [
         "standard",
-        "greenlife",
-        "base",
         "matcha",
+        "clipper",
         "pastel",
         "spectrum",
         "custom",
-        "contrasto"
+        "contrasto",
+        "greenlife",
+        "base"
       ]
     }
   },
